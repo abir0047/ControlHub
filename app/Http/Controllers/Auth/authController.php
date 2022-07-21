@@ -55,12 +55,12 @@ class authController extends Controller
     {
 
         $data = $request->validate([
-            'email' => 'required | unique:users',
-            'password' => 'confirmed | required ',
+            'email' => 'required',
+            'password' => 'required',
 
         ]);
 
-        $user = User::where('email',$data['email'])->get();
+        $user = User::where('email',$data['email'])->first();
 
         if(!$user || !Hash::check($data['password'], $user->password)){
             return response([
