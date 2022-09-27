@@ -23,7 +23,6 @@ return new class extends Migration
             $table->string('division')->nullable();
             $table->string('birth_date')->nullable();
             $table->string('university')->nullable();
-            $table->string('role');
             $table->string('gender')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
