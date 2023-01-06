@@ -1,6 +1,10 @@
 <?php
 
-use App\Http\Controllers\Auth\authController;
+use App\Http\Controllers\Api\authController;
+use App\Http\Controllers\Api\blogController;
+use App\Http\Controllers\Api\examController;
+use App\Http\Controllers\Api\orderController;
+use App\Http\Controllers\Api\reportController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -18,16 +22,32 @@ use Illuminate\Support\Facades\Route;
 
 
 //public route
-Route::post("/register", [authController::class, 'register']);
-Route::post("/login", [authController::class, 'login']);
+Route::post("/signup", [authController::class, 'register']);
+Route::post("/signin", [authController::class, 'login']);
 
 
 //protected route
 Route::group(['middleware' => 'auth:sanctum'], function () {
-
+    Route::post("/showProfile", [authController::class, 'showProfile']);
+    Route::post("/updatePassword", [authController::class, 'updatePassword']);
+    Route::post("/updateInformation", [authController::class, 'updateInformation']);
     Route::post("/logout", [authController::class, 'logout']);
+
+    Route::post("/getGroup", [examController::class, 'getGroup']);
+    Route::post("/getQuestionSet", [examController::class, 'getQuestionSet']);
+    Route::post("/getQuestion", [examController::class, 'getQuestion']);
+
+    Route::post("/inputReport", [reportController::class, 'inputReport']);
+    Route::post("/getReport", [reportController::class, 'getReport']);
+
+    Route::post("/postBlog", [blogController::class, 'postBlog']);
+    Route::post("/readBlog", [blogController::class, 'readBlog']);
+    Route::post("/updateBlog", [blogController::class, 'updateBlog']);
+    Route::post("/deleteBlog", [blogController::class, 'deleteBlog']);
+
+    Route::post("/makeOrder", [orderController::class, 'makeOrder']);
 });
 
-Route::get('/getUser', function () {
-    return User::get();
-});
+// Route::get('/getUser', function () {
+//     return User::get();
+// });

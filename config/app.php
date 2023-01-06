@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'ControlHub'),
 
     /*
     |--------------------------------------------------------------------------
@@ -70,6 +70,8 @@ return [
     */
 
     'timezone' => 'UTC',
+    'date_format' => 'd/m/Y',
+    'date_format_javascript' => 'DD/MM/YYYY',
 
     /*
     |--------------------------------------------------------------------------
