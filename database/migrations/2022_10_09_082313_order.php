@@ -13,10 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('exam_access', function (Blueprint $table) {
+        Schema::create('order', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('examinee')->references('id')->on('users')->constrained()->onDelete('cascade');
-            $table->foreignId('exam_group_id')->references('id')->on('exam_groups')->constrained()->onDelete('cascade');
+            $table->string('name');
+            $table->foreignId('user_id')->references('id')->on('users')->constrained()->onDelete('cascade');
+            $table->string('amount');
+            $table->string('status');
+            $table->timestamps();
         });
     }
 
@@ -24,9 +27,10 @@ return new class extends Migration
      * Reverse the migrations.
      *
      * @return void
+     * 
      */
     public function down()
     {
-        Schema::dropIfExists('exam_access');
+        Schema::dropIfExists('order');
     }
 };

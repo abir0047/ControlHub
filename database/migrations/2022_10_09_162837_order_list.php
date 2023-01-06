@@ -13,10 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('exam_access', function (Blueprint $table) {
+        Schema::create('order_list', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('examinee')->references('id')->on('users')->constrained()->onDelete('cascade');
-            $table->foreignId('exam_group_id')->references('id')->on('exam_groups')->constrained()->onDelete('cascade');
+            $table->string('name');
+            $table->foreignId('order_id')->references('id')->on('order')->constrained()->onDelete('cascade');
+            $table->date('deadline');
         });
     }
 
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('exam_access');
+        Schema::dropIfExists('order_list');
     }
 };
