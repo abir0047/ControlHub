@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\OrderProcessController;
 use App\Http\Controllers\QuestionRelated\ExamCategoriesController;
 use App\Http\Controllers\QuestionRelated\ExamGroupController;
 use App\Http\Controllers\QuestionRelated\QuestionController;
@@ -74,11 +74,11 @@ Route::delete('/question/delete', [QuestionController::class, 'destroy'])->name(
 Route::get('/question/edit', [QuestionController::class, 'edit'])->name('question.edit');
 Route::post('/question/update', [QuestionController::class, 'update'])->name('question.update');
 
-// OrderController
-Route::get('/check-order', [OrderController::class, 'index'])->name('order.index');
-Route::post('/process-order', [OrderController::class, 'process'])->name('order.process');
-Route::post('/processed-order', [OrderController::class, 'workLoad'])->name('order.workLoad');
-Route::get('/order-list', [OrderController::class, 'orderList'])->name('order.orderList');
-Route::post('/remove-access', [OrderController::class, 'removeAccess'])->name('order.removeAccess');
+// OrderProcessController
+Route::get('/check-order', [OrderProcessController::class, 'index'])->name('order.index');
+Route::post('/process-order', [OrderProcessController::class, 'process'])->name('order.process');
+Route::post('/processed-order', [OrderProcessController::class, 'workLoad'])->name('order.workLoad');
+Route::get('/order-list', [OrderProcessController::class, 'orderList'])->name('order.orderList');
+Route::post('/remove-access', [OrderProcessController::class, 'removeAccess'])->name('order.removeAccess');
 
 require __DIR__ . '/auth.php';
