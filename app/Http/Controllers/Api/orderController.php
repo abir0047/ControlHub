@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class orderController extends Controller
@@ -31,6 +32,29 @@ class orderController extends Controller
         $response = [
             'message' => "The order is made",
             'order' => $order,
+            'token' => $token,
+        ];
+
+        return response($response, 201);
+    }
+
+    public function getOrderOptions(Request $request)
+    {
+        $data = $request->validate([
+            'categoryName' => 'required | string',
+        ]);
+        $cat = DB::table('exam_categories')->where('name', $data['categoryName'])->first();
+        if (!$cat) {
+            return response([
+                'massage' => "Category does not exist.",
+            ], 401);
+        }
+        $groups = DB::table('exam_groups')->join('exam_access', 'exam_groups.id', "=", 'exam_access.exam_group_id')
+            ->where('exam_groups.exam_category_id', $cat->id)->where('exam_access.examinee', "!=", Auth::user()->id)->get();
+
+        $token = $request->bearerToken();
+        $response = [
+            'group' => $groups,
             'token' => $token,
         ];
 
