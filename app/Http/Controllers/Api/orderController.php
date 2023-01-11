@@ -49,12 +49,12 @@ class orderController extends Controller
                 'massage' => "Category does not exist.",
             ], 401);
         }
-        $groups = DB::table('exam_groups')->join('exam_access', 'exam_groups.id', "=", 'exam_access.exam_group_id')
-            ->where('exam_groups.exam_category_id', $cat->id)->where('exam_access.examinee', "!=", Auth::user()->id)->get();
+        $groups = DB::table('exam_groups')->leftJoin('exam_access', 'exam_groups.id', "=", 'exam_access.exam_group_id')
+            ->where('exam_groups.exam_category_id', $cat->id)->whereNull('exam_access.exam_group_id')->get();
 
         $token = $request->bearerToken();
         $response = [
-            'group' => $groups,
+            'groups' => $groups,
             'token' => $token,
         ];
 
