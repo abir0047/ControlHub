@@ -29,7 +29,7 @@ class authController extends Controller
 
 		if (!$group) {
 			return response([
-				'massage' => "Name of the free group must be 'Group Free'. Contact Admin."
+				'message' => "Name of the free group must be 'Group Free'. Contact Admin."
 			], 401);
 		}
 		DB::table('exam_access')->insert([
@@ -60,7 +60,7 @@ class authController extends Controller
 
 		if (!$user || !Hash::check($data['password'], $user->password)) {
 			return response([
-				'massage' => "Email or password is incorrect"
+				'message' => "Email or password is incorrect"
 			], 401);
 		}
 

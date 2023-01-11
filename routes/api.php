@@ -46,6 +46,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post("/deleteBlog", [blogController::class, 'deleteBlog']);
 
     Route::post("/makeOrder", [orderController::class, 'makeOrder']);
+    Route::post("/getOrderOptions", [orderController::class, 'getOrderOptions']);
 });
 
 // Route::get('/getUser', function () {
