@@ -24,14 +24,13 @@ use Illuminate\Support\Facades\Route;
 //public route
 Route::post("/signup", [authController::class, 'register']);
 Route::post("/signin", [authController::class, 'login']);
-
+Route::post("/logout", [authController::class, 'logout']);
 
 //protected route
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post("/showProfile", [authController::class, 'showProfile']);
     Route::post("/updatePassword", [authController::class, 'updatePassword']);
     Route::post("/updateInformation", [authController::class, 'updateInformation']);
-    Route::post("/logout", [authController::class, 'logout']);
 
     Route::post("/getGroup", [examController::class, 'getGroup']);
     Route::post("/getQuestionSet", [examController::class, 'getQuestionSet']);
