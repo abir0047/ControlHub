@@ -38,7 +38,7 @@ class OrderProcessController extends Controller
         ]);
 
         DB::table('order')->where('id', $order->id)->update([
-            'status' => 'Proccessed'
+            'status' => 'Approved'
         ]);
 
 

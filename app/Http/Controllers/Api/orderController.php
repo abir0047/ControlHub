@@ -42,15 +42,19 @@ class orderController extends Controller
     {
         $data = $request->validate([
             'categoryName' => 'required | string',
+            'userEmail' => 'required | string',
         ]);
         $cat = DB::table('exam_categories')->where('name', $data['categoryName'])->first();
+        $groups = User::where('email', $data['userEmail'])->join('exam_access', 'id', "=", 'exam_access.examinee')
+            ->join('exam_groups')->where('exam_groups.exam_category_id', $cat->id)->whereNull('exam_access.exam_group_id')->get();
         if (!$cat) {
             return response([
                 'massage' => "Category does not exist.",
             ], 401);
         }
-        $groups = DB::table('exam_groups')->leftJoin('exam_access', 'exam_groups.id', "=", 'exam_access.exam_group_id')
-            ->where('exam_groups.exam_category_id', $cat->id)->whereNull('exam_access.exam_group_id')->get();
+
+        // $groups = DB::table('exam_groups')->leftJoin('exam_access', 'exam_groups.id', "=", 'exam_access.exam_group_id')
+        //     ->where('exam_groups.exam_category_id', $cat->id)->whereNull('exam_access.exam_group_id')->get();
 
         $token = $request->bearerToken();
         $response = [
