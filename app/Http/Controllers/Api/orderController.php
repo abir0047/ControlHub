@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use PHPUnit\TextUI\XmlConfiguration\Groups;
 
 class orderController extends Controller
 {
@@ -45,20 +46,28 @@ class orderController extends Controller
             'userEmail' => 'required | string',
         ]);
         $cat = DB::table('exam_categories')->where('name', $data['categoryName'])->first();
-        $groups = DB::table('users')
-            ->join('exam_access', 'exam_access.examinee', "=", 'users.id')
-            ->where('users.email', $data['userEmail'])
-            // ->join('exam_groups', 'exam_groups.id', '=', 'exam_access.exam_group_id')->where('exam_groups.exam_category_id', $cat->id)
-            // ->whereNull('exam_access.exam_group_id')
-            ->get();
         if (!$cat) {
             return response([
                 'massage' => "Category does not exist.",
             ], 401);
         }
+        $access = DB::table('exam_access')->select('exam_groups.id', 'exam_groups.exam_category_id', 'exam_groups.name')
+            ->join('users', 'users.id', '=', 'exam_access.examinee')
+            ->join('exam_groups', 'exam_groups.id', 'exam_access.exam_group_id')
+            ->where('exam_groups.exam_category_id', $cat->id)
+            ->where('users.email', $data['userEmail'])->get();
 
-        // $groups = DB::table('exam_groups')->leftJoin('exam_access', 'exam_groups.id', "=", 'exam_access.exam_group_id')
-        //     ->where('exam_groups.exam_category_id', $cat->id)->whereNull('exam_access.exam_group_id')->get();
+        $groups = DB::table('exam_groups AS g1')
+            ->where('g1.exam_category_id', $cat->id)
+            ->get();
+
+        foreach ($access as $a) {
+            foreach ($groups as $key => $value) {
+                if ($a == $value) {
+                    $groups->forget($key);
+                }
+            }
+        }
 
         $token = $request->bearerToken();
         $response = [
