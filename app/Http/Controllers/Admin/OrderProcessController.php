@@ -30,6 +30,7 @@ class OrderProcessController extends Controller
             'deadline' => $request->deadline,
         ]);
 
+
         $examGroup = DB::table('exam_groups')->where('name', $order->name)->first();
 
         $examAccess =  DB::table('exam_access')->insert([
