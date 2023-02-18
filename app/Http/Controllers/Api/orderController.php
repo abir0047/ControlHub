@@ -45,8 +45,8 @@ class orderController extends Controller
             'userEmail' => 'required | string',
         ]);
         $cat = DB::table('exam_categories')->where('name', $data['categoryName'])->first();
-        $groups = User::where('email', $data['userEmail'])
-            // ->join('exam_access', 'users.id', "=", 'exam_access.examinee')
+        $groups = DB::table('users')->where('users.email', $data['userEmail'])
+            ->join('exam_access', 'users.id', "=", 'exam_access.examinee')
             // ->join('exam_groups', 'exam_groups.id', '=', 'exam_access.exam_group_id')->where('exam_groups.exam_category_id', $cat->id)
             // ->whereNull('exam_access.exam_group_id')
             ->first();
