@@ -46,10 +46,10 @@ class orderController extends Controller
         ]);
         $cat = DB::table('exam_categories')->where('name', $data['categoryName'])->first();
         $groups = DB::table('users')->where('users.email', $data['userEmail'])
-            ->join('exam_access', 'users.id', "=", 'exam_access.examinee')
+            ->join('exam_access', 'exam_access.examinee', "=", 'users.id')
             // ->join('exam_groups', 'exam_groups.id', '=', 'exam_access.exam_group_id')->where('exam_groups.exam_category_id', $cat->id)
             // ->whereNull('exam_access.exam_group_id')
-            ->first();
+            ->get();
         if (!$cat) {
             return response([
                 'massage' => "Category does not exist.",
