@@ -24,7 +24,7 @@ class orderController extends Controller
             'name' => $data['orderName'],
             'user_id' => $user->id,
             'amount' => $data['amount'],
-            'status' => 'Processing',
+            'status' => 'Pending',
 
         ]);
 
@@ -72,6 +72,42 @@ class orderController extends Controller
         $token = $request->bearerToken();
         $response = [
             'groups' => $groups,
+            'token' => $token,
+        ];
+
+        return response($response, 201);
+    }
+
+    public function getMyGroups(Request $request)
+    {
+        $data = $request->validate([
+            'categoryName' => 'required | string',
+            'userEmail' => 'required | string',
+        ]);
+        $cat = DB::table('exam_categories')->where('name', $data['categoryName'])->first();
+        if (!$cat) {
+            return response([
+                'massage' => "Category does not exist.",
+            ], 401);
+        }
+        $user = User::where('email', $data['userEmail'])->first();
+
+        $file1 = DB::table('order')->join('exam_access', 'order.user_id', '=', 'exam_access.examinee')
+            ->join('exam_groups', 'exam_groups.id', 'exam_access.exam_group_id')
+            ->where('exam_groups.exam_category_id', $cat->id)->where('order.status', 'Pending')
+            ->where('order.user_id', $user->id)->get();
+
+        $file2 = DB::table('order')->join('exam_access', 'order.user_id', '=', 'exam_access.examinee')
+            ->join('exam_groups', 'exam_groups.id', 'exam_access.exam_group_id')
+            ->join('order_list', 'order.id', 'order_list.order_id')
+            ->where('exam_groups.exam_category_id', $cat->id)->where('order.status', 'Approved')
+            ->where('order.user_id', $user->id)->get();
+        $token = $request->bearerToken();
+
+        $response = [
+            'message' => "My groups are here.",
+            'pendingOrder' => $file1,
+            'approvedOrder' => $file2,
             'token' => $token,
         ];
 
