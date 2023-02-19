@@ -70,9 +70,10 @@ class orderController extends Controller
             }
         }
 
-        $file = DB::table('order')->select('exam_groups.id', 'exam_groups.exam_category_id', 'exam_groups.name')
-            ->join('exam_access', 'order.user_id', '=', 'exam_access.examinee')
-            ->join('exam_groups', 'exam_groups.id', 'exam_access.exam_group_id')
+        $file = DB::table('order')
+            ->select('exam_groups.id', 'exam_groups.exam_category_id', 'exam_groups.name')
+            // ->join('exam_access', 'order.user_id', '=', 'exam_access.examinee')
+            ->join('exam_groups', 'exam_groups.name', 'order.name')
             ->where('exam_groups.exam_category_id', $cat->id)
             ->where('order.user_id', $user->id)->get();
 
@@ -87,6 +88,7 @@ class orderController extends Controller
         $response = [
             'groups' => $groups,
             'token' => $token,
+            'test' => $file,
         ];
 
         return response($response, 201);
