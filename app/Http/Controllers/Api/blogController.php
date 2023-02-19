@@ -14,13 +14,22 @@ class blogController extends Controller
     {
         $data = $request->validate([
             'title' => 'required | string',
-            'post' => 'required | string',
-            // 'email' => 'required | string',
+            'content' => 'required | string',
+            'thumnail' => 'required | string',
+            'thumnail_alt_text' => 'required | string',
+            'meta_keyword' => 'required | string',
+            'meta_description' => 'required | string',
+            'category' => 'required | string',
         ]);
-        // $user = User::where('email', $data['email'])->first();
+
         $blog =  DB::table('blog')->insert([
             'title' => $data['title'],
-            'post' => $data['post'],
+            'content' => $data['content'],
+            'thumnail' => $data['thumnail'],
+            'thumnail_alt_text' => $data['thumnail_alt_text'],
+            'meta_keyword' => $data['meta_keyword'],
+            'meta_description' => $data['meta_description'],
+            'category' => $data['category'],
         ]);
 
         $token = $request->bearerToken();
@@ -55,7 +64,12 @@ class blogController extends Controller
         $data = $request->validate([
             'past_title' => 'required | string',
             'new_title' => 'nullable | string',
-            'new_post' => 'required | string',
+            'new_content' => 'nullable | string',
+            'new_thumnail' => 'nullable | string',
+            'new_thumnail_alt_text' => 'nullable | string',
+            'new_meta_keyword' => 'nullable | string',
+            'new_meta_description' => 'nullable | string',
+            'new_category' => 'nullable | string',
         ]);
 
         if (!array_key_exists('new_title', $data)) {
@@ -63,13 +77,50 @@ class blogController extends Controller
         } else {
             $title = $data['new_title'];
         }
-        $post = $data['new_post'];
 
         $blog = DB::table('blog')->where('title', $data['past_title'])->first();
 
+        if (!array_key_exists('new_content', $data)) {
+            $content = $blog->content;
+        } else {
+            $content = $data['new_content'];
+        }
+
+        if (!array_key_exists('new_thumnail', $data)) {
+            $thumnail = $blog->thumnail;
+        } else {
+            $thumnail = $data['new_thumnail'];
+        }
+        if (!array_key_exists('new_thumnail_alt_text', $data)) {
+            $thumnail_alt_text = $blog->thumnail_alt_text;
+        } else {
+            $thumnail_alt_text = $data['new_thumnail_alt_text'];
+        }
+        if (!array_key_exists('new_meta_keyword', $data)) {
+            $meta_keyword = $blog->meta_keyword;
+        } else {
+            $meta_keyword = $data['new_meta_keyword'];
+        }
+        if (!array_key_exists('new_meta_description', $data)) {
+            $meta_description = $blog->meta_description;
+        } else {
+            $meta_description = $data['new_meta_description'];
+        }
+        if (!array_key_exists('new_category', $data)) {
+            $category = $blog->category;
+        } else {
+            $category = $data['new_category'];
+        }
+
+
         $blog = User::where('id', $blog->id)->update([
             'title' => $title,
-            'post' => $post,
+            'content' => $content,
+            'thumnail' => $thumnail,
+            'thumnail_alt_text' => $thumnail_alt_text,
+            'meta_keyword' => $meta_keyword,
+            'meta_description' => $meta_description,
+            'category' => $category,
         ]);
 
         $token = $request->bearerToken();
