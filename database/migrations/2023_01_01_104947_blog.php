@@ -16,8 +16,12 @@ return new class extends Migration
         Schema::create('blog', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->longText('post');
-            $table->string('meta')->nullable();
+            $table->longText('content');
+            $table->string('thumnail');
+            $table->string('thumnail_alt_text');
+            $table->string('meta_keyword');
+            $table->string('meta_description');
+            $table->string('category');
             $table->timestamps();
         });
     }
