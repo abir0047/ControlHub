@@ -62,7 +62,7 @@ class blogController extends Controller
     public function updateBlog(Request $request)
     {
         $data = $request->validate([
-            'past_title' => 'required | string',
+            'blog_id' => 'required | string',
             'new_title' => 'nullable | string',
             'new_content' => 'nullable | string',
             'new_thumnail' => 'nullable | string',
@@ -72,14 +72,14 @@ class blogController extends Controller
             'new_category' => 'nullable | string',
         ]);
 
+
+        $blog = DB::table('blog')->where('id', $data['blog_id'])->first();
+
         if (!array_key_exists('new_title', $data)) {
-            $title = $data['past_title'];
+            $title = $blog->title;
         } else {
             $title = $data['new_title'];
         }
-
-        $blog = DB::table('blog')->where('title', $data['past_title'])->first();
-
         if (!array_key_exists('new_content', $data)) {
             $content = $blog->content;
         } else {
@@ -113,7 +113,7 @@ class blogController extends Controller
         }
 
 
-        $blog = User::where('id', $blog->id)->update([
+        $blog = DB::table('blog')->where('id', $blog->id)->update([
             'title' => $title,
             'content' => $content,
             'thumnail' => $thumnail,
@@ -137,18 +137,15 @@ class blogController extends Controller
     public function deleteBlog(Request $request)
     {
         $data = $request->validate([
-            'title' => 'required | string',
+            'blog_id' => 'required | string',
         ]);
 
-        $blog = DB::table('blog')->where('title', $data['title'])->first();
-
-        $blog  = User::where('id', $blog->id)->delete();
+        DB::table('blog')->where('id', $data['blog_id'])->delete();
 
         $token = $request->bearerToken();
 
         $response = [
             'message' => "The blog is remove",
-            'blog' => $blog,
             'token' => $token,
         ];
 

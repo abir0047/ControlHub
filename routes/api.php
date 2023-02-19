@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Route;
 Route::post("/signup", [authController::class, 'register']);
 Route::post("/signin", [authController::class, 'login']);
 Route::post("/logout", [authController::class, 'logout']);
+Route::post("/readBlog", [blogController::class, 'readBlog']);
 
 //protected route
 Route::group(['middleware' => 'auth:sanctum'], function () {
@@ -40,7 +41,6 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post("/getReport", [reportController::class, 'getReport']);
 
     Route::post("/postBlog", [blogController::class, 'postBlog']);
-    Route::post("/readBlog", [blogController::class, 'readBlog']);
     Route::post("/updateBlog", [blogController::class, 'updateBlog']);
     Route::post("/deleteBlog", [blogController::class, 'deleteBlog']);
 
