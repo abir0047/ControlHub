@@ -33,7 +33,7 @@ class OrderProcessController extends Controller
 
         $examGroup = DB::table('exam_groups')->where('name', $order->name)->first();
 
-        $examAccess =  DB::table('exam_access')->insert([
+        DB::table('exam_access')->insert([
             'examinee' => Auth::user()->id,
             'exam_group_id' => $examGroup->id,
         ]);
