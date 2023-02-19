@@ -51,11 +51,12 @@ class orderController extends Controller
                 'massage' => "Category does not exist.",
             ], 401);
         }
+        $user = User::where('email', $data['userEmail'])->first();
+
         $access = DB::table('exam_access')->select('exam_groups.id', 'exam_groups.exam_category_id', 'exam_groups.name')
-            ->join('users', 'users.id', '=', 'exam_access.examinee')
             ->join('exam_groups', 'exam_groups.id', 'exam_access.exam_group_id')
             ->where('exam_groups.exam_category_id', $cat->id)
-            ->where('users.email', $data['userEmail'])->get();
+            ->where('exam_access.examinee', $user->id)->get();
 
         $groups = DB::table('exam_groups AS g1')
             ->where('g1.exam_category_id', $cat->id)
@@ -69,6 +70,19 @@ class orderController extends Controller
             }
         }
 
+        $file = DB::table('order')->select('exam_groups.id', 'exam_groups.exam_category_id', 'exam_groups.name')
+            ->join('exam_access', 'order.user_id', '=', 'exam_access.examinee')
+            ->join('exam_groups', 'exam_groups.id', 'exam_access.exam_group_id')
+            ->where('exam_groups.exam_category_id', $cat->id)
+            ->where('order.user_id', $user->id)->get();
+
+        foreach ($file as $f) {
+            foreach ($groups as $key => $value) {
+                if ($f == $value) {
+                    $groups->forget($key);
+                }
+            }
+        }
         $token = $request->bearerToken();
         $response = [
             'groups' => $groups,
