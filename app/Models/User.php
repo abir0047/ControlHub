@@ -24,8 +24,6 @@ class User extends Authenticatable
         'password',
         'mobile',
         'district',
-        'upazila',
-        'division',
         'birth_date',
         'university',
         'role',

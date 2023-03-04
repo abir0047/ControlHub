@@ -137,9 +137,7 @@ class authController extends Controller
 			'name' => 'nullable |string',
 			'email' => 'required',
 			'mobile' => 'nullable | integer',
-			'division' => 'nullable | string',
 			'district' => 'nullable | string',
-			'upazila' => 'nullable | string',
 			'birth_date' => 'nullable | string',
 			'university' => 'nullable | string',
 			'gender' => 'nullable | string',
@@ -157,14 +155,8 @@ class authController extends Controller
 		if (array_key_exists('mobile', $data)) {
 			$user->mobile = $data['mobile'];
 		}
-		if (array_key_exists('division', $data)) {
-			$user->division = $data['division'];
-		}
 		if (array_key_exists('district', $data)) {
 			$user->district = $data['district'];
-		}
-		if (array_key_exists('upazila', $data)) {
-			$user->upazila = $data['upazila'];
 		}
 		if (array_key_exists('birth_date', $data)) {
 			$user->birth_date = $data['birth_date'];
@@ -178,9 +170,7 @@ class authController extends Controller
 		$user = User::where('id', $user->id)->update([
 			'name' => $user->name,
 			'mobile' => $user->mobile,
-			'division' => $user->division,
 			'district' => $user->district,
-			'upazila' => $user->upazila,
 			'birth_date' => $user->birth_date,
 			'university' => $user->university,
 			'gender' => $user->gender,
