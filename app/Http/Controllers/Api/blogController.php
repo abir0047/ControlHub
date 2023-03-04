@@ -63,6 +63,28 @@ class blogController extends Controller
         return response($response, 201);
     }
 
+    public function readSingleBlog(Request $request)
+    {
+        $data = $request->validate([
+            'blog_id' => 'required | string',
+        ]);
+        $blog =  DB::table('blog')->where('id', $data['blog_id'])->first();
+        if (!$blog) {
+            return response([
+                'massage' => "Blog is empty.",
+            ], 401);
+        }
+        $token = $request->bearerToken();
+
+        $response = [
+            'message' => "Single blog is presented",
+            'blog' => $blog,
+            'token' => $token,
+        ];
+
+        return response($response, 201);
+    }
+
     public function updateBlog(Request $request)
     {
         $data = $request->validate([
