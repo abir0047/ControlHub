@@ -18,9 +18,7 @@ class authController extends Controller
             'password' => 'confirmed | required ',
             'role' => 'required | string',
             'mobile' => 'nullable | integer|size:15',
-            'division' => 'nullable | string',
             'district' => 'nullable | string',
-            'upazila' => 'nullable | string',
             'birth_date' => 'nullable | string',
             'university' => 'nullable | string',
             'gender' => 'nullable | string',
@@ -32,9 +30,7 @@ class authController extends Controller
             'password' => bcrypt($data['password']),
             'role' => $data['role'],
             // 'mobile'=> $data['mobile'],
-            // 'division'=> $data['district'],
             // 'district'=> $data['upazila'],
-            // 'upazila'=> $data['union'],
             // 'birth_date'=> $data['birth_date'],
             // 'university'=> $data['university'],
             // 'gender'=> $data['gender'],
@@ -60,12 +56,12 @@ class authController extends Controller
 
         ]);
 
-        $user = User::where('email',$data['email'])->first();
+        $user = User::where('email', $data['email'])->first();
 
-        if(!$user || !Hash::check($data['password'], $user->password)){
+        if (!$user || !Hash::check($data['password'], $user->password)) {
             return response([
-                'massage'=> "Email or password is incorrect"
-            ],401);
+                'massage' => "Email or password is incorrect"
+            ], 401);
         }
 
         $token = $user->createToken('adminControlToken')->plainTextToken;
@@ -76,7 +72,6 @@ class authController extends Controller
         ];
 
         return response($response, 201);
-
     }
 
     public function logout()
@@ -88,7 +83,7 @@ class authController extends Controller
         return response()->json('Successfully logged out');
     }
 
-    public function profileUpdate(){
-        
+    public function profileUpdate()
+    {
     }
 }

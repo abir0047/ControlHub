@@ -19,8 +19,6 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('mobile')->nullable();
             $table->string('district')->nullable();
-            $table->string('upazila')->nullable();
-            $table->string('division')->nullable();
             $table->string('birth_date')->nullable();
             $table->string('university')->nullable();
             $table->string('gender')->nullable();
