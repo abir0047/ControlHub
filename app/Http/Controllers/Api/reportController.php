@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\DB;
 
 class reportController extends Controller
 {
-    public function inputReport(Request $request){
+    public function inputReport(Request $request)
+    {
         $data = $request->validate([
             'attempted' => 'required | string',
             'right' => 'required | string',
@@ -20,40 +21,40 @@ class reportController extends Controller
             'userEmail' => 'required | string',
         ]);
         $questionSet = DB::table('question_set')->where('name', $data['questionSetName'])->first();
-        $user = User::where('email',$data['userEmail'])->first();
+        $user = User::where('email', $data['userEmail'])->first();
 
         $report =  DB::table('report')->insert([
-            'attempted'=> $data['attempted'],
-            'right'=> $data['right'],
-            'wrong'=> $data['wrong'],
-            'total_marks'=> $data['total_marks'],
-            'taken_time'=> $data['taken_time'],
-            'exam_date'=> time(),
-            'examinee'=> $user->id,
-            'question_set_id'=> $questionSet->id,
+            'attempted' => $data['attempted'],
+            'right' => $data['right'],
+            'wrong' => $data['wrong'],
+            'total_marks' => $data['total_marks'],
+            'taken_time' => $data['taken_time'],
+            'exam_date' => date("Y-m-d", time()),
+            'examinee' => $user->id,
+            'question_set_id' => $questionSet->id,
         ]);
 
+
         $token = $request->bearerToken();
-        
+
         $response = [
-            'message'=>"Report is inputed",
+            'message' => "Report is inputed",
             'report' => $report,
             'token' => $token,
         ];
 
         return response($response, 201);
-
-
     }
-    public function getReport(Request $request){
+    public function getReport(Request $request)
+    {
         $data = $request->validate([
             'userEmail' => 'required | string',
         ]);
-        $user = User::where('email',$data['userEmail'])->first();
+        $user = User::where('email', $data['userEmail'])->first();
         $report = DB::table('report')->where('examinee', $user->id)->get();
-        
+
         $token = $request->bearerToken();
-        
+
         $response = [
             'report' => $report,
             'token' => $token,
