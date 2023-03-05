@@ -51,7 +51,7 @@ class reportController extends Controller
             'userEmail' => 'required | string',
         ]);
         $user = User::where('email', $data['userEmail'])->first();
-        $report = DB::table('report')->where('examinee', $user->id)->groupBy('question_set_id')->latest()->get();
+        $report = DB::table('report')->where('examinee', $user->id)->groupBy('question_set_id')->latest('exam_date')->get();
 
         $token = $request->bearerToken();
 
