@@ -52,7 +52,7 @@ class reportController extends Controller
         ]);
         $user = User::where('email', $data['userEmail'])->first();
         // $report = DB::table('report')->where('examinee', $user->id)->groupBy('question_set_id')->latest('exam_date')->get();
-        $report = DB::table('report')->where('examinee', $user->id)->groupBy(['examinee', 'question_set_id'])->latest('exam_date')->get();
+        $report = DB::table('report')->where('examinee', $user->id)->groupBy(['examinee', 'question_set_id'])->latest()->get();
 
         $token = $request->bearerToken();
 
