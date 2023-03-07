@@ -89,11 +89,12 @@ class reportController extends Controller
                 }
             }
         }
+        $report = $grouped_report;
 
         $token = $request->bearerToken();
 
         $response = [
-            'report' => $grouped_report,
+            'report' => $report,
             'token' => $token,
         ];
 
