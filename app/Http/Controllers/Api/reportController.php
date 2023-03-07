@@ -51,13 +51,49 @@ class reportController extends Controller
             'userEmail' => 'required | string',
         ]);
         $user = User::where('email', $data['userEmail'])->first();
-        // $report = DB::table('report')->where('examinee', $user->id)->groupBy('question_set_id')->latest('exam_date')->get();
-        $report = DB::table('report')->where('examinee', $user->id)->groupBy(['examinee', 'question_set_id'])->latest()->get();
+
+        $report = DB::table('question_set')
+            ->where('examinee', $user->id)
+            ->join('report', 'question_set.id', '=', 'report.question_set_id')
+            ->where('question_set.exam_group_id', '!=', 1)
+            ->join(DB::raw('(SELECT question_set_id, AVG(total_marks) AS average_total_marks FROM report GROUP BY question_set_id) AS report2'), 'question_set.id', '=', 'report2.question_set_id')
+            ->select('report.*', 'question_set.*', 'report2.average_total_marks')
+            ->get();
+
+        $grouped_report = [];
+
+        $set = 1;
+        for ($group = 1; $group <= 10; $group++) {
+            for ($i = 1; $i <= 10; $i++) {
+                $grouped_report[] = [
+                    'group_id' => $group + 1,
+                    'group_name' => 'Group ' . strval($group),
+                    'set_id' => $set + 5,
+                    'set_name' => 'Set ' . strval($i),
+                    'participate' => false,
+                    'average_total_marks' => '',
+                    'last_total_marks' => '',
+                    'taken_time' => '',
+                ];
+                $set++;
+            }
+        }
+
+        foreach ($report as $row) {
+            foreach ($grouped_report as &$group) {
+                if ($row->question_set_id == $group['set_id']) {
+                    $group['participate'] = true;
+                    $group['last_total_marks'] = $row->total_marks;
+                    $group['average_total_marks'] = $row->average_total_marks;
+                    $group['taken_time'] = $row->taken_time;
+                }
+            }
+        }
 
         $token = $request->bearerToken();
 
         $response = [
-            'report' => $report,
+            'report' => $grouped_report,
             'token' => $token,
         ];
 
