@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Mail\PasswordReset;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class authController extends Controller
 {
@@ -180,6 +183,34 @@ class authController extends Controller
 			'message' => "Profile is updated",
 			'user' => $user,
 			'token' => $token,
+		];
+
+		return response($response, 201);
+	}
+
+	public function passwordReset(Request $request)
+	{
+		$data = $request->validate([
+			'email' => 'required',
+		]);
+		$user = User::where('email', $data['email'])->first();
+
+		if (!$user) {
+			return response([
+				'massage' => "User does not exist.",
+			], 401);
+		}
+
+		$sendMail = $user->email;
+		$newPassword = Str::random(10);
+		$user = User::where('id', $user->id)->update([
+			'password' => Hash::make($newPassword),
+		]);
+
+		Mail::to($sendMail)->send(new PasswordReset($sendMail, $newPassword));
+
+		$response = [
+			'message' => "Password resent mail has been sent successfully",
 		];
 
 		return response($response, 201);

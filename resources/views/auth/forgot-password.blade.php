@@ -2,7 +2,7 @@
     <x-auth-card>
         <x-slot name="logo">
             <a href="/">
-                <img src="{{ asset("img/logo.jpg") }}" class="w-20 h-20 rounded"/>
+                <img src="{{ asset('img/logo.jpg') }}" class="w-20 h-20 rounded" />
                 {{-- <x-application-logo class="w-20 h-20 fill-current text-gray-500" /> --}}
             </a>
         </x-slot>
@@ -24,7 +24,8 @@
             <div>
                 <x-input-label for="email" :value="__('Email')" />
 
-                <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
+                <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')"
+                    required autofocus />
             </div>
 
             <div class="flex items-center justify-end mt-4">
