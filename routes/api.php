@@ -27,6 +27,7 @@ Route::post("/signin", [authController::class, 'login']);
 Route::post("/logout", [authController::class, 'logout']);
 Route::post("/readBlog", [blogController::class, 'readBlog']);
 Route::post("/readSingleBlog", [blogController::class, 'readSingleBlog']);
+Route::post("/passwordReset", [authController::class, 'passwordReset']);
 
 //protected route
 Route::group(['middleware' => 'auth:sanctum'], function () {
