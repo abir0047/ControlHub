@@ -17,7 +17,7 @@ class examController extends Controller
         $cat = DB::table('exam_categories')->where('name', $data['categoryName'])->first();
         if (!$cat) {
             return response([
-                'massage' => "Category does not exist.",
+                'message' => "Category does not exist.",
             ], 401);
         }
         $groups = DB::table('exam_groups')->join('exam_access', 'exam_groups.id', "=", 'exam_access.exam_group_id')
@@ -47,7 +47,7 @@ class examController extends Controller
         $group = DB::table('exam_groups')->where('name', $data['groupName'])->first();
         if (!$group) {
             return response([
-                'massage' => "Group does not exist.",
+                'message' => "Group does not exist.",
             ], 401);
         }
         $examSet = DB::table('question_set')->where('exam_group_id', $group->id)->get();
@@ -67,7 +67,7 @@ class examController extends Controller
         $questionSet = DB::table('question_set')->where('name', $data['questionSetName'])->first();
         if (!$questionSet) {
             return response([
-                'massage' => "Question Set does not exist.",
+                'message' => "Question Set does not exist.",
             ], 401);
         }
         $question = DB::table('questions')->where('exam_set_id', $questionSet->id)->get();

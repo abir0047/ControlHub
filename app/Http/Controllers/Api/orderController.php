@@ -48,7 +48,7 @@ class orderController extends Controller
         $cat = DB::table('exam_categories')->where('name', $data['categoryName'])->first();
         if (!$cat) {
             return response([
-                'massage' => "Category does not exist.",
+                'message' => "Category does not exist.",
             ], 401);
         }
         $user = User::where('email', $data['userEmail'])->first();
@@ -101,7 +101,7 @@ class orderController extends Controller
         $cat = DB::table('exam_categories')->where('name', $data['categoryName'])->first();
         if (!$cat) {
             return response([
-                'massage' => "Category does not exist.",
+                'message' => "Category does not exist.",
             ], 401);
         }
         $user = User::where('email', $data['userEmail'])->first();

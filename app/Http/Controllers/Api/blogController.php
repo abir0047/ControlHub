@@ -49,7 +49,7 @@ class blogController extends Controller
         $blog =  DB::table('blog')->get();
         if (!$blog) {
             return response([
-                'massage' => "Blog is empty.",
+                'message' => "Blog is empty.",
             ], 401);
         }
         $token = $request->bearerToken();
@@ -71,7 +71,7 @@ class blogController extends Controller
         $blog =  DB::table('blog')->where('id', $data['blog_id'])->first();
         if (!$blog) {
             return response([
-                'massage' => "Blog is empty.",
+                'message' => "Blog is empty.",
             ], 401);
         }
         $token = $request->bearerToken();
