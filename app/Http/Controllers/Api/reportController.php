@@ -9,6 +9,30 @@ use Illuminate\Support\Facades\DB;
 
 class reportController extends Controller
 {
+    private function getBanglaNumber($englishNumber)
+    {
+        $banglaDigits = [
+            '০',
+            '১',
+            '২',
+            '৩',
+            '৪',
+            '৫',
+            '৬',
+            '৭',
+            '৮',
+            '৯'
+        ];
+
+        $banglaNumber = '';
+
+        for ($i = 0; $i < strlen($englishNumber); $i++) {
+            $digit = intval($englishNumber[$i]);
+            $banglaNumber .= $banglaDigits[$digit];
+        }
+
+        return $banglaNumber;
+    }
     public function inputReport(Request $request)
     {
         $data = $request->validate([
@@ -67,9 +91,9 @@ class reportController extends Controller
             for ($i = 1; $i <= 10; $i++) {
                 $grouped_report[] = [
                     'group_id' => $group + 1,
-                    'group_name' => 'Group ' . strval($group),
+                    'group_name' => 'গ্রুপ ' . $this->getBanglaNumber(strval($group)),
                     'set_id' => $set + 5,
-                    'set_name' => 'Set ' . strval($i),
+                    'set_name' => 'সেট ' . $this->getBanglaNumber(strval($i)),
                     'participate' => false,
                     'average_total_marks' => '',
                     'last_total_marks' => '',

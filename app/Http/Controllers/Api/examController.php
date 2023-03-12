@@ -23,14 +23,6 @@ class examController extends Controller
         $groups = DB::table('exam_groups')->join('exam_access', 'exam_groups.id', "=", 'exam_access.exam_group_id')
             ->where('exam_groups.exam_category_id', $cat->id)->where('exam_access.examinee', Auth::user()->id)->get();
 
-        // $access = DB::table('exam_access')->where('examinee', Auth::user()->id)->get();
-
-        // DB::table('users')
-        //     ->join('contacts', 'users.id', '=', 'contacts.user_id')
-        //     ->join('orders', 'users.id', '=', 'orders.user_id')
-        //     ->select('users.*', 'contacts.phone', 'orders.price')
-        //     ->get();
-
         $token = $request->bearerToken();
         $response = [
             'group' => $groups,
@@ -71,6 +63,15 @@ class examController extends Controller
             ], 401);
         }
         $question = DB::table('questions')->where('exam_set_id', $questionSet->id)->get();
+
+        foreach ($question as $q) {
+            $options = [$q->option1, $q->option2, $q->option3, $q->option4];
+            shuffle($options);
+            $q->option1 = $options[0];
+            $q->option2 = $options[1];
+            $q->option3 = $options[2];
+            $q->option4 = $options[3];
+        }
         $token = $request->bearerToken();
         $response = [
             'question' => $question,
