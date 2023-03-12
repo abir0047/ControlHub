@@ -77,11 +77,13 @@ class authController extends Controller
 		return response($response, 201);
 	}
 
-	public function logout()
+	public function logout(Request $request)
 	{
-		Auth::user()->tokens->each(function ($token, $key) {
-			$token->delete();
-		});
+		$data = $request->validate([
+			'email' => 'required',
+		]);
+		$user = User::where('email', $data['email'])->token_get_all()->first();
+		DB::table('personal_access_tokens')->where('tokenable_id', $user->id)->delete();
 
 		return response()->json('Successfully logged out');
 	}
@@ -94,7 +96,7 @@ class authController extends Controller
 		$user = User::where('email', $data['email'])->first();
 		if (!$user) {
 			return response([
-				'massage' => "Email not found"
+				'message' => "Email not found"
 			], 401);
 		}
 		$token = $request->bearerToken();
@@ -115,11 +117,11 @@ class authController extends Controller
 		$user = User::where('email', $data['email'])->first();
 		if (!$user) {
 			return response([
-				'massage' => "User does not exist.",
+				'message' => "User does not exist.",
 			], 401);
 		} else if (!Hash::check($data['oldPassword'], $user->password)) {
 			return response([
-				'massage' => "Password is incorrect."
+				'message' => "Password is incorrect."
 			], 401);
 		}
 		$user = User::where('id', $user->id)->update([
@@ -149,7 +151,7 @@ class authController extends Controller
 		$user = User::where('email', $data['email'])->first();
 		if (!$user) {
 			return response([
-				'massage' => "User does not exist.",
+				'message' => "User does not exist.",
 			], 401);
 		}
 		if (array_key_exists('name', $data)) {
@@ -197,7 +199,7 @@ class authController extends Controller
 
 		if (!$user) {
 			return response([
-				'massage' => "User does not exist.",
+				'message' => "User does not exist.",
 			], 401);
 		}
 
