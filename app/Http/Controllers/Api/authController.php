@@ -82,10 +82,13 @@ class authController extends Controller
 		$data = $request->validate([
 			'email' => 'required',
 		]);
-		$user = User::where('email', $data['email'])->token_get_all()->first();
+		$user = User::where('email', $data['email'])->first();
 		DB::table('personal_access_tokens')->where('tokenable_id', $user->id)->delete();
 
-		return response()->json('Successfully logged out');
+		$response = [
+			'message' => "Successfully logged out",
+		];
+		return response()->json($response, 201);
 	}
 
 	public function showProfile(Request $request)
