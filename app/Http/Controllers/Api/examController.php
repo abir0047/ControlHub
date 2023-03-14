@@ -64,6 +64,8 @@ class examController extends Controller
         }
         $question = DB::table('questions')->where('exam_set_id', $questionSet->id)->get();
 
+        $question = $question->shuffle();
+
         foreach ($question as $q) {
             $options = [$q->option1, $q->option2, $q->option3, $q->option4];
             shuffle($options);
