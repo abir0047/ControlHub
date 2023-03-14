@@ -224,8 +224,6 @@ class authController extends Controller
 		}
 
 		$user = User::where('email', $request->email)->first();
-		$token = $user->createToken('adminControlToken')->plainTextToken;
-
 
 		if (!$user) {
 			$user = User::create([
@@ -238,6 +236,7 @@ class authController extends Controller
 				'examinee' => $user->id,
 				'exam_group_id' => 1,
 			]);
+			$token = $user->createToken('adminControlToken')->plainTextToken;
 
 			$response = [
 				'user' => $user,
@@ -246,6 +245,8 @@ class authController extends Controller
 
 			return response($response, 201);
 		} else {
+			$token = $user->createToken('adminControlToken')->plainTextToken;
+
 			$response = [
 				'user' => $user,
 				'token' => $token,
