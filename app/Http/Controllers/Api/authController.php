@@ -28,16 +28,9 @@ class authController extends Controller
 			'password' => bcrypt($data['password']),
 		]);
 
-		$group = DB::table('exam_groups')->where('name', 'Group Free')->first();
-
-		if (!$group) {
-			return response([
-				'message' => "Name of the free group must be 'Group Free'. Contact Admin."
-			], 401);
-		}
 		DB::table('exam_access')->insert([
 			'examinee' => $user->id,
-			'exam_group_id' => $group->id,
+			'exam_group_id' => 1,
 		]);
 
 		$token = $user->createToken('adminControlToken')->plainTextToken;
@@ -175,7 +168,7 @@ class authController extends Controller
 		if (array_key_exists('gender', $data)) {
 			$user->gender = $data['gender'];
 		}
-		$user = User::where('id', $user->id)->update([
+		User::where('id', $user->id)->update([
 			'name' => $user->name,
 			'mobile' => $user->mobile,
 			'district' => $user->district,
@@ -216,6 +209,7 @@ class authController extends Controller
 
 		$response = [
 			'message' => "Password resent mail has been sent successfully",
+			'user' => $user,
 		];
 
 		return response($response, 201);
