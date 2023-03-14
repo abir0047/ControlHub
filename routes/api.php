@@ -5,8 +5,6 @@ use App\Http\Controllers\Api\blogController;
 use App\Http\Controllers\Api\examController;
 use App\Http\Controllers\Api\orderController;
 use App\Http\Controllers\Api\reportController;
-use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,7 +22,9 @@ use Illuminate\Support\Facades\Route;
 //public route
 Route::post("/signup", [authController::class, 'register']);
 Route::post("/signin", [authController::class, 'login']);
+Route::post("/googleSignIn", [authController::class, 'googleSignIn']);
 Route::post("/logout", [authController::class, 'logout']);
+
 Route::post("/readBlog", [blogController::class, 'readBlog']);
 Route::post("/readSingleBlog", [blogController::class, 'readSingleBlog']);
 Route::post("/passwordReset", [authController::class, 'passwordReset']);
@@ -50,7 +50,3 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post("/getOrderOptions", [orderController::class, 'getOrderOptions']);
     Route::post("/getMyGroups", [orderController::class, 'getMyGroups']);
 });
-
-// Route::get('/getUser', function () {
-//     return User::get();
-// });
