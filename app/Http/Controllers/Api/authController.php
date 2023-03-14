@@ -201,7 +201,7 @@ class authController extends Controller
 
 		$sendMail = $user->email;
 		$newPassword = Str::random(10);
-		$user = User::where('id', $user->id)->update([
+		User::where('id', $user->id)->update([
 			'password' => Hash::make($newPassword),
 		]);
 
@@ -213,5 +213,45 @@ class authController extends Controller
 		];
 
 		return response($response, 201);
+	}
+
+	public function googleSignIn(Request $request)
+	{
+		if ($request->displayName == null || $request->email == null) {
+			return response([
+				'message' => "The api request is not google sign-in",
+			], 401);
+		}
+
+		$user = User::where('email', $request->email)->first();
+		$token = $user->createToken('adminControlToken')->plainTextToken;
+
+
+		if (!$user) {
+			$user = User::create([
+				'name' => $request->displayName,
+				'email' => $request->email,
+				'password' => bcrypt($request->serverAuthCode),
+			]);
+
+			DB::table('exam_access')->insert([
+				'examinee' => $user->id,
+				'exam_group_id' => 1,
+			]);
+
+			$response = [
+				'user' => $user,
+				'token' => $token,
+			];
+
+			return response($response, 201);
+		} else {
+			$response = [
+				'user' => $user,
+				'token' => $token,
+			];
+
+			return response($response, 201);
+		}
 	}
 }
