@@ -21,13 +21,15 @@ class authController extends Controller
 		$data = $request->validate([
 			'name' => 'required | string',
 			'email' => 'required | unique:users',
-			'password' => 'confirmed | required ',
+			// 'password' => 'confirmed | required ',
 
 		]);
+		$password = Str::random(10);
+
 		$user = User::create([
 			'name' => $data['name'],
 			'email' => $data['email'],
-			'password' => bcrypt($data['password']),
+			'password' => Hash::make($password),
 		]);
 
 		DB::table('exam_access')->insert([
@@ -36,7 +38,7 @@ class authController extends Controller
 		]);
 		$sendMail = $data['name'];
 
-		Mail::to($sendMail)->send(new VerifyEmail($sendMail));
+		Mail::to($sendMail)->send(new VerifyEmail($sendMail, $password));
 
 
 		$token = $user->createToken('adminControlToken')->plainTextToken;
@@ -64,6 +66,12 @@ class authController extends Controller
 			return response([
 				'message' => "Email or password is incorrect"
 			], 401);
+		}
+
+		if ($user->email_verified_at == null) {
+			User::where('id', $user->id)->update([
+				'email_verified_at' => date("Y-m-d H:i:s", time()),
+			]);
 		}
 
 		$token = $user->createToken('adminControlToken')->plainTextToken;

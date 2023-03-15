@@ -11,14 +11,16 @@ class VerifyEmail extends Mailable
 {
     use Queueable, SerializesModels;
     public $sendMail;
+    public $password;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($sendMail,)
+    public function __construct($sendMail, $password)
     {
         $this->sendMail = $sendMail;
+        $this->password = $password;
     }
 
     /**
@@ -28,6 +30,6 @@ class VerifyEmail extends Mailable
      */
     public function build()
     {
-        return $this->from(config('mail.from.address'))->subject("Verify Email")->markdown("emails.verify_email");
+        return $this->from(config('mail.from.address'))->subject("Your new account password")->markdown("emails.verify_email");
     }
 }
