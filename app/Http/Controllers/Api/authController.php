@@ -270,7 +270,7 @@ class authController extends Controller
 			$token = $user->createToken('adminControlToken')->plainTextToken;
 
 			$response = [
-				'test' => $test,
+				'test' => $user->email_verified_at,
 				'user' => $user,
 				'token' => $token,
 			];
