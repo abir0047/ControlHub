@@ -127,4 +127,25 @@ class orderController extends Controller
 
         return response($response, 201);
     }
+
+    public function couponPrice(Request $request)
+    {
+        $data = $request->validate([
+            'couponName' => 'required | string',
+        ]);
+
+        $coupon = DB::table('coupon')->where('couponName', $data['couponName'])->first();
+
+        if (!$coupon) {
+            return response([
+                'message' => "Your coupon is invalid.",
+            ], 401);
+        }
+        $response = [
+            'message' => "My groups are here.",
+            'price' => $coupon->couponPrice,
+        ];
+
+        return response($response, 201);
+    }
 }
