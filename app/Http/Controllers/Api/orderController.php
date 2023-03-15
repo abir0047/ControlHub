@@ -17,6 +17,9 @@ class orderController extends Controller
             'orderName' => 'required | string',
             'userEmail' => 'required | string',
             'amount' => 'required',
+            'toBkash' => 'required',
+            'fromBkash' => 'required',
+            'transactionId' => 'required',
         ]);
         $user = User::where('email', $data['userEmail'])->first();
 
@@ -24,8 +27,12 @@ class orderController extends Controller
             'name' => $data['orderName'],
             'user_id' => $user->id,
             'amount' => $data['amount'],
+            'toBkash' => $data['toBkash'],
+            'fromBkash' => $data['fromBkash'],
+            'transactionId' => $data['transactionId'],
             'status' => 'Pending',
-
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
 
         $token = $request->bearerToken();
