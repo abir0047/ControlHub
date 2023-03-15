@@ -34,6 +34,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post("/showProfile", [authController::class, 'showProfile']);
     Route::post("/updatePassword", [authController::class, 'updatePassword']);
     Route::post("/updateInformation", [authController::class, 'updateInformation']);
+    Route::post("/contactMail", [authController::class, 'contactMail']);
+
 
     Route::post("/getGroup", [examController::class, 'getGroup']);
     Route::post("/getQuestionSet", [examController::class, 'getQuestionSet']);

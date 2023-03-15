@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Mail\ContactUs;
+use App\Mail\VerifyEmail;
 use App\Mail\PasswordReset;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -32,6 +34,10 @@ class authController extends Controller
 			'examinee' => $user->id,
 			'exam_group_id' => 1,
 		]);
+		$sendMail = $data['name'];
+
+		Mail::to($sendMail)->send(new VerifyEmail($sendMail));
+
 
 		$token = $user->createToken('adminControlToken')->plainTextToken;
 
@@ -230,6 +236,7 @@ class authController extends Controller
 				'name' => $request->displayName,
 				'email' => $request->email,
 				'password' => bcrypt($request->serverAuthCode),
+				'email_verified_at' => date("Y-m-d H:i:s", time()),
 			]);
 
 			DB::table('exam_access')->insert([
@@ -245,6 +252,11 @@ class authController extends Controller
 
 			return response($response, 201);
 		} else {
+			if ($user->email_verified_at == null) {
+				User::where('id', $user->id)->update([
+					'email_verified_at' => date("Y-m-d H:i:s", time()),
+				]);
+			}
 			$token = $user->createToken('adminControlToken')->plainTextToken;
 
 			$response = [
@@ -254,5 +266,26 @@ class authController extends Controller
 
 			return response($response, 201);
 		}
+	}
+
+	public function contactMail(Request $request)
+	{
+		request()->validate([
+			'query' => 'required',
+			'subject' => 'required',
+			'email' => 'required'
+		]);
+		$query = $request->get('query');
+		$userEmail = $request->get('email');
+		$subject = $request->get('subject');
+		Mail::to(config('mail.from.address'))->send(new ContactUs($userEmail, $subject, $query));
+
+		$token = $request->bearerToken();
+		$response = [
+			'message' => "Your query has been sent",
+			'token' => $token,
+		];
+
+		return response($response, 201);
 	}
 }
