@@ -238,7 +238,7 @@ class authController extends Controller
 		}
 
 		$user = User::where('email', $request->email)->first();
-
+		$test = 'Test begin';
 		if (!$user) {
 			$user = User::create([
 				'name' => $request->displayName,
@@ -260,14 +260,17 @@ class authController extends Controller
 
 			return response($response, 201);
 		} else {
+			$test = "Befor email_verified_at check";
 			if ($user->email_verified_at == null) {
 				User::where('id', $user->id)->update([
 					'email_verified_at' => date("Y-m-d H:i:s", time()),
 				]);
+				$test = "inside email_verified_at null";
 			}
 			$token = $user->createToken('adminControlToken')->plainTextToken;
 
 			$response = [
+				'test' => $test,
 				'user' => $user,
 				'token' => $token,
 			];
