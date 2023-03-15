@@ -19,6 +19,9 @@ return new class extends Migration
             $table->foreignId('user_id')->references('id')->on('users')->constrained()->onDelete('cascade');
             $table->string('amount');
             $table->string('status');
+            $table->string('toBkash');
+            $table->string('fromBkash');
+            $table->string('transactionId');
             $table->timestamps();
         });
     }
