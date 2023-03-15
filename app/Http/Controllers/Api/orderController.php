@@ -142,7 +142,7 @@ class orderController extends Controller
             ], 401);
         }
         $response = [
-            'message' => "My groups are here.",
+            'message' => "Your coupon is here here.",
             'price' => $coupon->couponPrice,
         ];
 
