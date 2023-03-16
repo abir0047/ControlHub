@@ -21,8 +21,9 @@ class examController extends Controller
             ], 401);
         }
         $group1 = DB::table('exam_groups')->join('exam_access', 'exam_groups.id', "=", 'exam_access.exam_group_id')
-            ->where('exam_groups.exam_category_id', $cat->id)->where('exam_access.examinee', Auth::user()->id)->get();
-        $group2 = DB::table('exam_groups')->where('exam_groups.exam_category_id', $cat->id)->get();
+            ->where('exam_groups.exam_category_id', $cat->id)->where('exam_access.examinee', Auth::user()->id)->pluck('name');
+
+        $group2 = DB::table('exam_groups')->where('exam_groups.exam_category_id', $cat->id)->whereNotIn('name', $group1)->pluck('name');
 
 
         $groups = collect($group1)->map(function ($item) {
