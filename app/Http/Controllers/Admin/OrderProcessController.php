@@ -59,6 +59,7 @@ class OrderProcessController extends Controller
         $examGroup = DB::table('exam_groups')->where('name', $orderList->name)->first();
         DB::table('exam_access')->where('exam_group_id', $examGroup->id)->delete();
         DB::table('order_list')->where('id', $request->id)->delete();
+        DB::table('order')->where('id', $orderList->order_id)->delete();
         return redirect()->route('order.orderList');
     }
 }
