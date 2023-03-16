@@ -243,7 +243,9 @@ class authController extends Controller
 				'name' => $request->displayName,
 				'email' => $request->email,
 				'password' => bcrypt($request->serverAuthCode),
-				'email_verified_at' => now(),
+			]);
+			User::where('id', $user->id)->update([
+				'email_verified_at' => date("Y-m-d H:i:s", time()),
 			]);
 
 			DB::table('exam_access')->insert([
