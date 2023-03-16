@@ -31,7 +31,7 @@ class OrderProcessController extends Controller
             'deadline' => $request->deadline,
         ]);
 
-        $user = User::where('email', $order->user_id)->first();
+        $user = User::where('id', $order->user_id)->first();
         $examGroup = DB::table('exam_groups')->where('name', $order->name)->first();
 
         DB::table('exam_access')->insert([
