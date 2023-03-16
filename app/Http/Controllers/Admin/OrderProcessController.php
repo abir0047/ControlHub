@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -30,11 +31,11 @@ class OrderProcessController extends Controller
             'deadline' => $request->deadline,
         ]);
 
-
+        $user = User::where('email', $order->user_id)->first();
         $examGroup = DB::table('exam_groups')->where('name', $order->name)->first();
 
         DB::table('exam_access')->insert([
-            'examinee' => Auth::user()->id,
+            'examinee' => $user->id,
             'exam_group_id' => $examGroup->id,
         ]);
 
