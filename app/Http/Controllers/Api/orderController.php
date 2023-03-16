@@ -123,7 +123,7 @@ class orderController extends Controller
             ->join('exam_groups', 'exam_groups.id', '=', 'exam_access.exam_group_id')
             ->join('order_list', 'order.id', '=', 'order_list.order_id')
             ->where('exam_groups.exam_category_id', $cat->id)->where('order.status', 'Approved')
-            ->where('order.user_id', $user->id)->get(['order.name', 'exam_access.deadline']);
+            ->where('order.user_id', $user->id)->get(['order.name', 'order_list.deadline']);
         $token = $request->bearerToken();
 
         $response = [
