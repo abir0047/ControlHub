@@ -117,13 +117,13 @@ class orderController extends Controller
             ->join('exam_access', 'order.user_id', '=', 'exam_access.examinee')
             ->join('exam_groups', 'exam_groups.id', '=', 'exam_access.exam_group_id')
             ->where('exam_groups.exam_category_id', $cat->id)->where('order.status', 'Pending')
-            ->where('order.user_id', $user->id)->get('order.name', 'order.status');
+            ->where('order.user_id', $user->id)->get(['order.name', 'order.status']);
 
         $file2 = DB::table('order')->join('exam_access', 'order.user_id', '=', 'exam_access.examinee')
             ->join('exam_groups', 'exam_groups.id', '=', 'exam_access.exam_group_id')
             ->join('order_list', 'order.id', '=', 'order_list.order_id')
             ->where('exam_groups.exam_category_id', $cat->id)->where('order.status', 'Approved')
-            ->where('order.user_id', $user->id)->get();
+            ->where('order.user_id', $user->id)->get(['order.name', 'exam_access.deadline']);
         $token = $request->bearerToken();
 
         $response = [
