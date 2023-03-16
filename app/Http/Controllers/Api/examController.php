@@ -20,8 +20,18 @@ class examController extends Controller
                 'message' => "Category does not exist.",
             ], 401);
         }
-        $groups = DB::table('exam_groups')->join('exam_access', 'exam_groups.id', "=", 'exam_access.exam_group_id')
+        $group1 = DB::table('exam_groups')->join('exam_access', 'exam_groups.id', "=", 'exam_access.exam_group_id')
             ->where('exam_groups.exam_category_id', $cat->id)->where('exam_access.examinee', Auth::user()->id)->get();
+        $group2 = DB::table('exam_groups')->where('exam_groups.exam_category_id', $cat->id)->get();
+
+
+        $groups = collect($group1)->map(function ($item) {
+            $item->access = true;
+            return $item;
+        })->merge(collect($group2)->map(function ($item) {
+            $item->access = false;
+            return $item;
+        }));
 
         $token = $request->bearerToken();
         $response = [
