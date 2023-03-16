@@ -27,11 +27,9 @@ class examController extends Controller
 
 
         $groups = collect($group1)->map(function ($item) {
-            $item->access = true;
-            return $item;
+            return (object) ['name' => $item, 'access' => true];
         })->merge(collect($group2)->map(function ($item) {
-            $item->access = false;
-            return $item;
+            return (object) ['name' => $item, 'access' => false];
         }));
 
         $token = $request->bearerToken();
