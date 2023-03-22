@@ -38,7 +38,10 @@
                                                 transactionId</th>
                                             <th scope="col"
                                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-200 uppercase tracking-wider">
-                                                Action</th>
+                                                Approve</th>
+                                            <th scope="col"
+                                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-200 uppercase tracking-wider">
+                                                Reject</th>
                                         </tr>
                                     </thead>
                                     <tbody class="bg-white divide-y divide-gray-200">
@@ -60,7 +63,18 @@
                                                             <input type="hidden" name='id'
                                                                 value="{{ $order->id }}" />
                                                             <button
-                                                                class="m-2 p-2 bg-gray-200 hover:bg-gray-300 rounded">Action</button>
+                                                                class="m-2 p-2 bg-gray-200 hover:bg-gray-300 rounded">Approve</button>
+                                                        </form>
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    <div class="flex justify-center">
+                                                        <form action="{{ route('order.remove') }}" method="POST">
+                                                            @csrf
+                                                            <input type="hidden" name='id'
+                                                                value="{{ $order->id }}" />
+                                                            <button
+                                                                class="m-2 p-2 bg-gray-200 hover:bg-gray-300 rounded">Reject</button>
                                                         </form>
                                                     </div>
                                                 </td>

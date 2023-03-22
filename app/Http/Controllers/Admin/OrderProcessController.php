@@ -5,9 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Termwind\Components\Dd;
+use Carbon\Carbon;
 
 class OrderProcessController extends Controller
 
@@ -21,20 +20,15 @@ class OrderProcessController extends Controller
         $orders = DB::table('order')->where('status', 'Pending')->paginate(10);
         return view('order_related.new-order', ['orders' => $orders]);
     }
+
     public function process(Request $request)
     {
         $order = DB::table('order')->where('id', $request->id)->first();
-        return view('order_related.new-order-process', ['order' => $order]);
-    }
 
-    public function workLoad(Request $request)
-    {
-        $order = DB::table('order')->where('id', $request->id)->first();
-
-        $orderList =  DB::table('order_list')->insert([
+        DB::table('order_list')->insert([
             'name' => $order->name,
             'order_id' => $order->id,
-            'deadline' => $request->deadline,
+            'deadline' => Carbon::now()->addYear(),
         ]);
 
         $user = User::where('id', $order->user_id)->first();
@@ -50,6 +44,12 @@ class OrderProcessController extends Controller
         ]);
 
 
+        return redirect()->route('order.index');
+    }
+
+    public function removeOrder(Request $request)
+    {
+        DB::table('order')->where('id', $request->id)->delete();
         return redirect()->route('order.index');
     }
 
