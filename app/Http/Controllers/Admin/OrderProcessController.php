@@ -19,12 +19,12 @@ class OrderProcessController extends Controller
     public function index()
     {
         $orders = DB::table('order')->where('status', 'Pending')->paginate(10);
+        dd($orders);
         return view('order_related.new-order', ['orders' => $orders]);
     }
     public function process(Request $request)
     {
         $order = DB::table('order')->where('id', $request->id)->first();
-        dd($order);
         return view('order_related.new-order-process', ['order' => $order]);
     }
 
