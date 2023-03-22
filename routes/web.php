@@ -76,8 +76,8 @@ Route::post('/question/update', [QuestionController::class, 'update'])->name('qu
 
 // OrderProcessController
 Route::get('/check-order', [OrderProcessController::class, 'index'])->name('order.index');
-Route::post('/process-order', [OrderProcessController::class, 'process'])->name('order.process');
-Route::post('/processed-order', [OrderProcessController::class, 'workLoad'])->name('order.workLoad');
+Route::post('/processed-order', [OrderProcessController::class, 'process'])->name('order.process');
+Route::post('/remove-order', [OrderProcessController::class, 'removeOrder'])->name('order.remove');
 Route::get('/order-list', [OrderProcessController::class, 'orderList'])->name('order.orderList');
 Route::post('/remove-access', [OrderProcessController::class, 'removeAccess'])->name('order.removeAccess');
 
