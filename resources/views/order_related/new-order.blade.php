@@ -29,6 +29,15 @@
                                                 Status</th>
                                             <th scope="col"
                                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-200 uppercase tracking-wider">
+                                                toBkash</th>
+                                            <th scope="col"
+                                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-200 uppercase tracking-wider">
+                                                fromBkash</th>
+                                            <th scope="col"
+                                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-200 uppercase tracking-wider">
+                                                transactionId</th>
+                                            <th scope="col"
+                                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-200 uppercase tracking-wider">
                                                 Action</th>
                                         </tr>
                                     </thead>
@@ -41,6 +50,9 @@
                                                 <td class="px-6 py-4 whitespace-nowrap">{{ $order->amount }}</td>
 
                                                 <td class="px-6 py-4 whitespace-nowrap">{{ $order->status }}</td>
+                                                <td class="px-6 py-4 whitespace-nowrap">{{ $order->toBkash }}</td>
+                                                <td class="px-6 py-4 whitespace-nowrap">{{ $order->fromBkash }}</td>
+                                                <td class="px-6 py-4 whitespace-nowrap">{{ $order->transactionId }}</td>
                                                 <td class="px-6 py-4 whitespace-nowrap">
                                                     <div class="flex justify-center">
                                                         <form action="{{ route('order.process') }}" method="POST">
