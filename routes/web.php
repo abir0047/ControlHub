@@ -1,11 +1,11 @@
 <?php
 
 use App\Http\Controllers\Admin\OrderProcessController;
-use App\Http\Controllers\QuestionRelated\ExamCategoriesController;
-use App\Http\Controllers\QuestionRelated\ExamGroupController;
-use App\Http\Controllers\QuestionRelated\QuestionController;
-use App\Http\Controllers\QuestionRelated\QuestionSetController;
-use App\Http\Controllers\QuestionRelated\SectionController;
+use App\Http\Controllers\Admin\QuestionRelated\ExamCategoriesController;
+use App\Http\Controllers\Admin\QuestionRelated\ExamGroupController;
+use App\Http\Controllers\Admin\QuestionRelated\QuestionController;
+use App\Http\Controllers\Admin\QuestionRelated\QuestionSetController;
+use App\Http\Controllers\Admin\QuestionRelated\SectionController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 

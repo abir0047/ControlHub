@@ -9,7 +9,12 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class OrderProcessController extends Controller
+
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     public function index()
     {
         $orders = DB::table('order')->where('status', 'Pending')->paginate(10);
