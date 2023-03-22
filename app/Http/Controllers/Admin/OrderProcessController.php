@@ -7,9 +7,15 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Termwind\Components\Dd;
 
 class OrderProcessController extends Controller
+
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     public function index()
     {
         $orders = DB::table('order')->where('status', 'Pending')->paginate(10);
@@ -18,6 +24,7 @@ class OrderProcessController extends Controller
     public function process(Request $request)
     {
         $order = DB::table('order')->where('id', $request->id)->first();
+        dd($order);
         return view('order_related.new-order-process', ['order' => $order]);
     }
 
