@@ -15,8 +15,9 @@ class blogController extends Controller
         $data = $request->validate([
             'title' => 'required | string',
             'content' => 'required | string',
-            'thumnail' => 'required | string',
-            'thumnail_alt_text' => 'required | string',
+            'thumbnail' => 'required | string',
+            'thumbnail_alt_text' => 'required | string',
+            'slug' => 'required | string',
             'meta_keyword' => 'required | string',
             'meta_description' => 'required | string',
             'category' => 'required | string',
@@ -25,8 +26,9 @@ class blogController extends Controller
         $blog =  DB::table('blog')->insert([
             'title' => $data['title'],
             'content' => $data['content'],
-            'thumnail' => $data['thumnail'],
-            'thumnail_alt_text' => $data['thumnail_alt_text'],
+            'thumbnail' => $data['thumnail'],
+            'thumbnail_alt_text' => $data['thumnail_alt_text'],
+            'slug' => $data['slug'],
             'meta_keyword' => $data['meta_keyword'],
             'meta_description' => $data['meta_description'],
             'category' => $data['category'],
@@ -91,8 +93,9 @@ class blogController extends Controller
             'blog_id' => 'required | string',
             'new_title' => 'nullable | string',
             'new_content' => 'nullable | string',
-            'new_thumnail' => 'nullable | string',
-            'new_thumnail_alt_text' => 'nullable | string',
+            'new_thumbnail' => 'nullable | string',
+            'new_thumbnail_alt_text' => 'nullable | string',
+            'new_slug' => 'nullable | string',
             'new_meta_keyword' => 'nullable | string',
             'new_meta_description' => 'nullable | string',
             'new_category' => 'nullable | string',
@@ -112,15 +115,20 @@ class blogController extends Controller
             $content = $data['new_content'];
         }
 
-        if (!array_key_exists('new_thumnail', $data)) {
-            $thumnail = $blog->thumnail;
+        if (!array_key_exists('new_thumbnail', $data)) {
+            $thumbnail = $blog->thumbnail;
         } else {
-            $thumnail = $data['new_thumnail'];
+            $thumbnail = $data['new_thumbnail'];
         }
-        if (!array_key_exists('new_thumnail_alt_text', $data)) {
-            $thumnail_alt_text = $blog->thumnail_alt_text;
+        if (!array_key_exists('new_thumbnail_alt_text', $data)) {
+            $thumbnail_alt_text = $blog->thumbnail_alt_text;
         } else {
-            $thumnail_alt_text = $data['new_thumnail_alt_text'];
+            $thumbnail_alt_text = $data['new_thumbnail_alt_text'];
+        }
+        if (!array_key_exists('new_slug', $data)) {
+            $slug = $blog->slug;
+        } else {
+            $slug = $data['new_slug'];
         }
         if (!array_key_exists('new_meta_keyword', $data)) {
             $meta_keyword = $blog->meta_keyword;
@@ -142,8 +150,9 @@ class blogController extends Controller
         $blog = DB::table('blog')->where('id', $blog->id)->update([
             'title' => $title,
             'content' => $content,
-            'thumnail' => $thumnail,
-            'thumnail_alt_text' => $thumnail_alt_text,
+            'thumnail' => $thumbnail,
+            'thumnail_alt_text' => $thumbnail_alt_text,
+            'slug' => $slug,
             'meta_keyword' => $meta_keyword,
             'meta_description' => $meta_description,
             'category' => $category,
@@ -163,10 +172,10 @@ class blogController extends Controller
     public function deleteBlog(Request $request)
     {
         $data = $request->validate([
-            'blog_id' => 'required | string',
+            'blog_slug' => 'required | string',
         ]);
 
-        DB::table('blog')->where('id', $data['blog_id'])->delete();
+        DB::table('blog')->where('slug', $data['blog_slug'])->delete();
 
         $token = $request->bearerToken();
 
