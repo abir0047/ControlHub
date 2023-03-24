@@ -26,8 +26,8 @@ class blogController extends Controller
         $blog =  DB::table('blog')->insert([
             'title' => $data['title'],
             'content' => $data['content'],
-            'thumbnail' => $data['thumnail'],
-            'thumbnail_alt_text' => $data['thumnail_alt_text'],
+            'thumbnail' => $data['thumbnail'],
+            'thumbnail_alt_text' => $data['thumbnail_alt_text'],
             'slug' => $data['slug'],
             'meta_keyword' => $data['meta_keyword'],
             'meta_description' => $data['meta_description'],
@@ -150,8 +150,8 @@ class blogController extends Controller
         $blog = DB::table('blog')->where('id', $blog->id)->update([
             'title' => $title,
             'content' => $content,
-            'thumnail' => $thumbnail,
-            'thumnail_alt_text' => $thumbnail_alt_text,
+            'thumbnail' => $thumbnail,
+            'thumbnail_alt_text' => $thumbnail_alt_text,
             'slug' => $slug,
             'meta_keyword' => $meta_keyword,
             'meta_description' => $meta_description,
