@@ -66,9 +66,9 @@ class blogController extends Controller
     public function readSingleBlog(Request $request)
     {
         $data = $request->validate([
-            'blog_id' => 'required | string',
+            'blog_slug' => 'required | string',
         ]);
-        $blog =  DB::table('blog')->where('id', $data['blog_id'])->first();
+        $blog =  DB::table('blog')->where('slug', $data['blog_slug'])->first();
         if (!$blog) {
             return response([
                 'message' => "Blog is empty.",

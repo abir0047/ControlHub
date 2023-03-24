@@ -31,11 +31,10 @@ class OrderProcessController extends Controller
             'deadline' => Carbon::now()->addYear(),
         ]);
 
-        $user = User::where('id', $order->user_id)->first();
         $examGroup = DB::table('exam_groups')->where('name', $order->name)->first();
 
         DB::table('exam_access')->insert([
-            'examinee' => $user->id,
+            'examinee' => $order->user_id,
             'exam_group_id' => $examGroup->id,
         ]);
 

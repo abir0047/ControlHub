@@ -17,8 +17,9 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->longText('content');
-            $table->string('thumnail');
-            $table->string('thumnail_alt_text');
+            $table->string('thumbnail');
+            $table->string('thumbnail_alt_text');
+            $table->string('slug');
             $table->string('meta_keyword');
             $table->string('meta_description');
             $table->string('category');
