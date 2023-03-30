@@ -48,7 +48,7 @@ class blogController extends Controller
     public function readBlog(Request $request)
     {
 
-        $blog =  DB::table('blog')->get();
+        $blog =  DB::table('blog')->select('id', 'title', 'thumbnail', 'thumbnail_alt_text', 'slug', 'meta_keyword', 'meta_description', 'category')->get();
         if (!$blog) {
             return response([
                 'message' => "Blog is empty.",
