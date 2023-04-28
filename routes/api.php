@@ -40,6 +40,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post("/getGroup", [examController::class, 'getGroup']);
     Route::post("/getQuestionSet", [examController::class, 'getQuestionSet']);
     Route::post("/getQuestion", [examController::class, 'getQuestion']);
+    Route::post("/getSubjectBasedQuestion", [examController::class, 'getSubjectBasedQuestion']);
 
     Route::post("/inputReport", [reportController::class, 'inputReport']);
     Route::post("/getReport", [reportController::class, 'getReport']);
