@@ -91,4 +91,42 @@ class examController extends Controller
 
         return response($response, 201);
     }
+
+    public function getSubjectBasedQuestion(Request $request)
+    {
+        $data = $request->validate([
+            'subjectName' => 'required | string',
+            'examGroupId' => 'required | integer',
+        ]);
+
+        $questionSets = DB::table('question_set')->where('exam_group_id', $data['examGroupId'])->get();
+        if (!$questionSets) {
+            return response([
+                'message' => "examGroupId is invalid.",
+            ], 401);
+        }
+        $questions = collect();
+        foreach ($questionSets as $questionSet) {
+            $question = DB::table('questions')->where('exam_set_id', $questionSet->id)->where('section', $data['subjectName'])->get();
+            $questions = $questions->concat($question);
+        }
+
+        $questions = $questions->shuffle();
+
+        foreach ($questions as $q) {
+            $options = [$q->option1, $q->option2, $q->option3, $q->option4];
+            shuffle($options);
+            $q->option1 = $options[0];
+            $q->option2 = $options[1];
+            $q->option3 = $options[2];
+            $q->option4 = $options[3];
+        }
+        $token = $request->bearerToken();
+        $response = [
+            'question' => $questions,
+            'token' => $token,
+        ];
+
+        return response($response, 201);
+    }
 }
