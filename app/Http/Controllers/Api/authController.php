@@ -36,6 +36,11 @@ class authController extends Controller
 			'examinee' => $user->id,
 			'exam_group_id' => 1,
 		]);
+
+		DB::table('exam_access')->insert([
+			'examinee' => $user->id,
+			'exam_group_id' => 12,
+		]);
 		$sendMail = $data['email'];
 
 		Mail::to($sendMail)->send(new VerifyEmail($sendMail, $password));
@@ -251,6 +256,11 @@ class authController extends Controller
 			DB::table('exam_access')->insert([
 				'examinee' => $user->id,
 				'exam_group_id' => 1,
+			]);
+
+			DB::table('exam_access')->insert([
+				'examinee' => $user->id,
+				'exam_group_id' => 12,
 			]);
 			$token = $user->createToken('adminControlToken')->plainTextToken;
 
