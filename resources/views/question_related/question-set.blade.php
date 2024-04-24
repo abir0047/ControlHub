@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-white leading-tight">
             {{ __('Question Set') }}
         </h2>
     </x-slot>
@@ -8,7 +8,8 @@
     <div class="py-12">
         <div class="ml-4 sm:px-6 lg:px-8">
             <div class="my-10 w-full">
-                <a href="{{ route('question-set.add') }} " class="p-3 bg-gray-300 hover:bg-gray-400 rounded">Add new</a>
+                <a href="{{ route('question-set.add') }} "
+                    class="p-3 bg-gray-300 dark:text-black  hover:bg-gray-400 rounded">Add new</a>
             </div>
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -26,7 +27,7 @@
                                         <th scope="col"
                                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-200 uppercase tracking-wider">
                                             Exam Group</th>
-                                            <th scope="col"
+                                        <th scope="col"
                                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-200 uppercase tracking-wider">
                                             Exam Category</th>
                                         <th scope="col"
@@ -34,7 +35,7 @@
                                             Edit</th>
                                     </tr>
                                 </thead>
-                                <tbody class="bg-white divide-y divide-gray-200">
+                                <tbody class="bg-white dark:text-black divide-y divide-gray-200">
                                     <tr></tr>
                                     @foreach ($sectionData as $data)
                                         @php

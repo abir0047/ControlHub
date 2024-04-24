@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-white leading-tight">
             {{ __('Question Set Update') }}
         </h2>
     </x-slot>
@@ -13,7 +13,7 @@
                 <div class="flex justify-center">
                     <x-auth-validation-errors class="mb-4" :errors="$errors" />
                 </div>
-                <div class="w-full rounded-xl bg-white p-4 shadow-2xl shadow-white/40">
+                <div class="w-full rounded-xl bg-white dark:text-black p-4 shadow-2xl shadow-white/40">
                     <div class="flex justify-center">
                         <form action="{{ route('question-set.update') }}" method="POST" class="w-full">
                             @csrf
@@ -28,10 +28,12 @@
                                 <select name="exam_category" id="exam_category" data-dependent="exam_group"
                                     class="w-full rounded-lg border bg-gray-100 border-slate-200 px-2 py-1 hover:border-blue-500 focus:outline-none focus:ring focus:ring-blue-500/40 active:ring active:ring-blue-500/40 dynamic">
 
-                                    {{ $checking = DB::table('exam_groups')->where( 'id',$data->exam_group_id)->first()->exam_category_id }}
-                                    {{ $checkC = DB::table('exam_categories')->where( 'id',$checking)->first()->name }}
+                                    {{ $checking = DB::table('exam_groups')->where('id', $data->exam_group_id)->first()->exam_category_id }}
+                                    {{ $checkC = DB::table('exam_categories')->where('id', $checking)->first()->name }}
                                     @foreach ($categories as $category)
-                                        <option value="{{ $category->name }}" {{ $category->name == $checkC ? 'selected' : '' }}>{{ $category->name }}</option>
+                                        <option value="{{ $category->name }}"
+                                            {{ $category->name == $checkC ? 'selected' : '' }}>{{ $category->name }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -39,9 +41,11 @@
                                 <label for="text" class="mb-2 font-semibold">Exam Group</label>
                                 <select name="exam_group" id="exam_group"
                                     class="w-full rounded-lg border bg-gray-100 border-slate-200 px-2 py-1 hover:border-blue-500 focus:outline-none focus:ring focus:ring-blue-500/40 active:ring active:ring-blue-500/40">
-                                    {{ $checkG = DB::table('exam_groups')->where( 'id',$data->exam_group_id)->first()->name }}
+                                    {{ $checkG = DB::table('exam_groups')->where('id', $data->exam_group_id)->first()->name }}
                                     @foreach ($groups as $group)
-                                        <option value="{{ $group->name }}" {{ $group->name == $checkG ? 'selected' : '' }}>{{ $group->name }}</option>
+                                        <option value="{{ $group->name }}"
+                                            {{ $group->name == $checkG ? 'selected' : '' }}>{{ $group->name }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>

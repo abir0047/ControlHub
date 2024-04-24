@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-white leading-tight">
             {{ __('Question Update') }}
         </h2>
     </x-slot>
@@ -9,11 +9,11 @@
         <div class="ml-4 sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
 
-        <!-- Validation Errors -->
-        <div class="flex justify-center">
-            <x-auth-validation-errors class="mb-4" :errors="$errors" />
-        </div>
-                <div class="w-full rounded-xl bg-white p-4 shadow-2xl shadow-white/40">
+                <!-- Validation Errors -->
+                <div class="flex justify-center">
+                    <x-auth-validation-errors class="mb-4" :errors="$errors" />
+                </div>
+                <div class="w-full rounded-xl bg-white dark:text-black p-4 shadow-2xl shadow-white/40">
                     <div class="flex justify-center">
                         <form action="{{ route('question.update') }}" method="POST" class="w-full">
                             @csrf
@@ -24,7 +24,9 @@
                                     class="w-full rounded-lg border bg-gray-100 border-slate-200 px-2 py-1 hover:border-blue-500 focus:outline-none focus:ring focus:ring-blue-500/40 active:ring active:ring-blue-500/40 dynamic">
                                     <option disabled selected value>Select one:</option>
                                     @foreach ($categories as $category)
-                                        <option value="{{ $category->name }}" {{ $category->name == $exam_category->name ? 'selected' : '' }}>{{ $category->name }}</option>
+                                        <option value="{{ $category->name }}"
+                                            {{ $category->name == $exam_category->name ? 'selected' : '' }}>
+                                            {{ $category->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -33,7 +35,9 @@
                                 <select name="exam_group" id="exam_group" data-dependent="question_set"
                                     class="w-full rounded-lg border bg-gray-100 border-slate-200 px-2 py-1 hover:border-blue-500 focus:outline-none focus:ring focus:ring-blue-500/40 active:ring active:ring-blue-500/40 dynamic">
                                     @foreach ($groups as $group)
-                                        <option value="{{ $group->name }}" {{ $group->name == $exam_group->name ? 'selected' : '' }}>{{ $group->name }}</option>
+                                        <option value="{{ $group->name }}"
+                                            {{ $group->name == $exam_group->name ? 'selected' : '' }}>
+                                            {{ $group->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -42,7 +46,9 @@
                                 <select name="question_set" id="question_set"
                                     class="w-full rounded-lg border bg-gray-100 border-slate-200 px-2 py-1 hover:border-blue-500 focus:outline-none focus:ring focus:ring-blue-500/40 active:ring active:ring-blue-500/40">
                                     @foreach ($examSets as $examSet)
-                                        <option value="{{ $examSet->name }}" {{ $examSet->name == $question_set->name ? 'selected' : '' }}>{{ $examSet->name }}</option>
+                                        <option value="{{ $examSet->name }}"
+                                            {{ $examSet->name == $question_set->name ? 'selected' : '' }}>
+                                            {{ $examSet->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -73,30 +79,39 @@
                             </div>
                             <div class="flex flex-col w-full mt-5">
                                 <label for="text" class="mb-2 font-semibold">Correct Answer</label>
-                                <div class="flex w-full rounded-lg border bg-gray-100 border-slate-200 px-2 py-3 justify-evenly">
-                                    <div class=" hover:border-blue-500 focus:outline-none focus:ring focus:ring-blue-500/40 active:ring active:ring-blue-500/40">
+                                <div
+                                    class="flex w-full rounded-lg border bg-gray-100 border-slate-200 px-2 py-3 justify-evenly">
+                                    <div
+                                        class=" hover:border-blue-500 focus:outline-none focus:ring focus:ring-blue-500/40 active:ring active:ring-blue-500/40">
 
-                                        <input type="radio" class="form-radio" name="correct_answer" value="option1" {{$question->correct_answer == $question->option1 ? 'checked' : ''}} />
+                                        <input type="radio" class="form-radio" name="correct_answer" value="option1"
+                                            {{ $question->correct_answer == $question->option1 ? 'checked' : '' }} />
                                         <span>Option One</span>
-        
+
                                     </div>
-                                    <div class=" hover:border-blue-500 focus:outline-none focus:ring focus:ring-blue-500/40 active:ring active:ring-blue-500/40">
-        
-                                        <input type="radio" class="form-radio" name="correct_answer" value="option2" {{$question->correct_answer == $question->option2 ? 'checked' : ''}}/>
+                                    <div
+                                        class=" hover:border-blue-500 focus:outline-none focus:ring focus:ring-blue-500/40 active:ring active:ring-blue-500/40">
+
+                                        <input type="radio" class="form-radio" name="correct_answer" value="option2"
+                                            {{ $question->correct_answer == $question->option2 ? 'checked' : '' }} />
                                         <span>Option Two</span>
-        
+
                                     </div>
-                                    <div class=" hover:border-blue-500 focus:outline-none focus:ring focus:ring-blue-500/40 active:ring active:ring-blue-500/40">
-        
-                                        <input type="radio" class="form-radio" name="correct_answer" value="option3" {{$question->correct_answer == $question->option3 ? 'checked' : ''}}/>
+                                    <div
+                                        class=" hover:border-blue-500 focus:outline-none focus:ring focus:ring-blue-500/40 active:ring active:ring-blue-500/40">
+
+                                        <input type="radio" class="form-radio" name="correct_answer" value="option3"
+                                            {{ $question->correct_answer == $question->option3 ? 'checked' : '' }} />
                                         <span>Option Three</span>
-        
+
                                     </div>
-                                    <div class=" hover:border-blue-500 focus:outline-none focus:ring focus:ring-blue-500/40 active:ring active:ring-blue-500/40">
-        
-                                        <input type="radio" class="form-radio" name="correct_answer" value="option4" {{$question->correct_answer == $question->option4 ? 'checked' : ''}}/>
+                                    <div
+                                        class=" hover:border-blue-500 focus:outline-none focus:ring focus:ring-blue-500/40 active:ring active:ring-blue-500/40">
+
+                                        <input type="radio" class="form-radio" name="correct_answer" value="option4"
+                                            {{ $question->correct_answer == $question->option4 ? 'checked' : '' }} />
                                         <span>Option Four</span>
-        
+
                                     </div>
                                 </div>
                             </div>
@@ -111,14 +126,16 @@
                                     class="w-full rounded-lg border bg-gray-100 border-slate-200 px-2 py-1 hover:border-blue-500 focus:outline-none focus:ring focus:ring-blue-500/40 active:ring active:ring-blue-500/40 dynamic">
                                     <option disabled selected value>Select one:</option>
                                     @foreach ($sections as $section)
-                                        <option value="{{ $section->name }}" {{ $section->name == $question->section ? 'selected' : '' }}>{{ $section->name }}</option>
+                                        <option value="{{ $section->name }}"
+                                            {{ $section->name == $question->section ? 'selected' : '' }}>
+                                            {{ $section->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="flex justify-center">
                                 <button class="m-2 p-2 bg-gray-200 hover:bg-gray-300 rounded mt-5">Submit</button>
                             </div>
-                            
+
                         </form>
                     </div>
                 </div>

@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-white leading-tight">
             {{ __('Exam Group Add New') }}
         </h2>
     </x-slot>
@@ -13,7 +13,7 @@
                 <div class="flex justify-center">
                     <x-auth-validation-errors class="mb-4" :errors="$errors" />
                 </div>
-                <div class="w-full rounded-xl bg-white p-4 shadow-2xl shadow-white/40">
+                <div class="w-full rounded-xl bg-white dark:text-black p-4 shadow-2xl shadow-white/40">
                     <div class="flex justify-center">
                         <form action="{{ route('exam-group.store') }}" method="POST" class="w-full">
                             @csrf

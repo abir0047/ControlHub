@@ -29,7 +29,7 @@
                 <div class="flex flex-row items-center justify-between flex-shrink-0 px-8 py-4">
                     <img src="{{ asset('img/logo.jpg') }}" class="w-10 h-10 m-5 rounded" />
                     <a href="#"
-                        class="text-lg font-semibold tracking-widest text-gray-900 uppercase rounded-lg dark:text-white focus:outline-none focus:shadow-outline">Control
+                        class="text-lg font-semibold tracking-widest text-gray-900 uppercase rounded-lg focus:outline-none focus:shadow-outline">Control
                         Hub</a>
                     <button class="rounded-lg md:hidden focus:outline-none focus:shadow-outline" @click="open = !open">
                         <svg fill="currentColor" viewBox="0 0 20 20" class="w-6 h-6">
@@ -43,7 +43,7 @@
                     </button>
                 </div>
                 <div
-                    class="text-lg font-semibold tracking-widest text-gray-900 rounded-lg dark:text-white focus:outline-none focus:shadow-outline mx-10 my-5">
+                    class="text-lg font-semibold tracking-widest text-gray-900 rounded-lg focus:outline-none focus:shadow-outline mx-10 my-5">
                     {{ Auth::user()->name }}
                 </div>
             </div>

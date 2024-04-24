@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-white leading-tight">
             {{ __('Exam Categories') }}
         </h2>
     </x-slot>
@@ -8,7 +8,8 @@
     <div class="py-12">
         <div class="ml-4 sm:px-6 lg:px-8">
             <div class="my-10 w-full">
-                <a href="{{ route('exam-categories.add') }} " class="p-3 bg-gray-300 hover:bg-gray-400 rounded">Add
+                <a href="{{ route('exam-categories.add') }} "
+                    class="p-3 bg-gray-300 dark:text-black hover:bg-gray-400 rounded">Add
                     new</a>
             </div>
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -36,8 +37,9 @@
                                     <tr></tr>
                                     @foreach ($sectionData as $data)
                                         <tr>
-                                            <td class="px-6 py-4 whitespace-nowrap">{{ $data->id }}</td>
-                                            <td class="px-6 py-4 whitespace-nowrap">
+                                            <td class="px-6 py-4 dark:text-black whitespace-nowrap">{{ $data->id }}
+                                            </td>
+                                            <td class="px-6 py-4 dark:text-black whitespace-nowrap">
                                                 <form action="{{ route('exam-group.search') }}" method="POST">
                                                     @csrf
                                                     <input type="hidden" name="exam_category_id"
@@ -47,8 +49,9 @@
                                                     </button>
                                                 </form>
                                             </td>
-                                            <td class="px-6 py-4 whitespace-nowrap">{{ $data->description }}</td>
-                                            <td class="px-6 py-4 text-sm">
+                                            <td class="px-6 py-4 dark:text-black  whitespace-nowrap">
+                                                {{ $data->description }}</td>
+                                            <td class="px-6 py-4  dark:text-black text-sm">
                                                 <div class="flex justify-center">
                                                     <form action="{{ route('exam-categories.update.view') }}"
                                                         method="POST">
