@@ -20,6 +20,9 @@
                                         <tr>
                                             <th scope="col"
                                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-200 uppercase tracking-wider">
+                                                User Name</th>
+                                            <th scope="col"
+                                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-200 uppercase tracking-wider">
                                                 Order Name</th>
                                             <th scope="col"
                                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-200 uppercase tracking-wider">
@@ -48,6 +51,7 @@
                                         <tr></tr>
                                         @foreach ($orders as $order)
                                             <tr>
+                                                <td class="px-6 py-4 whitespace-nowrap">{{ $order->user_name }}</td>
                                                 <td class="px-6 py-4 whitespace-nowrap">{{ $order->name }}</td>
 
                                                 <td class="px-6 py-4 whitespace-nowrap">{{ $order->amount }}</td>
