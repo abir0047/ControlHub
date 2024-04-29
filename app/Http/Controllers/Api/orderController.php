@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -162,6 +163,54 @@ class orderController extends Controller
         $response = [
             'message' => "Your coupon is here here.",
             'price' => $coupon->couponPrice,
+        ];
+
+        return response($response, 201);
+    }
+
+    public function checkAccess(Request $request)
+    {
+        $orderList = DB::table('order_list')->get();
+
+        foreach ($orderList as $singleOrder) {
+            if (Carbon::today()->gt(Carbon::parse($singleOrder->deadline))) {
+                $order = DB::table('order')->where('id', $singleOrder->order_id)->first();
+                if ($singleOrder->name = "বার কাউন্সিল - মাসিক") {
+                    $orderType = "barCouncil";
+                    $orderTime = "month";
+                } elseif ($singleOrder->name = "বার কাউন্সিল - বার্ষিক") {
+                    $orderType = "barCouncil";
+                    $orderTime = "year";
+                } elseif ($singleOrder->name = "জুডিশিয়ারি - মাসিক") {
+                    $orderType = "judiciary";
+                    $orderTime = "month";
+                } elseif ($singleOrder->name = "জুডিশিয়ারি - বার্ষিক") {
+                    $orderType = "judiciary";
+                    $orderTime = "year";
+                } else {
+                    $orderType = "other";
+                }
+                if ($orderType == "barCouncil") {
+                    $examGroups = DB::table('exam_groups')->where('exam_category_id', 1)->whereNot('name', 'বিগত বছরের প্রশ্নসমূহ')->get();
+                } elseif ($orderType == "judiciary") {
+                    $examGroups = DB::table('exam_groups')->where('exam_category_id', 2)->whereNot('name', 'বিগত বছরের প্রশ্নসমূহ')->get();
+                }
+
+                if ($orderType == "other") {
+                    $examGroup = DB::table('exam_groups')->where('name', $singleOrder->name)->first();
+                    DB::table('exam_access')->where('exam_group_id', $examGroup->id)->where("examinee", $order->user_id)->delete();
+                } else {
+                    foreach ($examGroups as $examGroup) {
+                        DB::table('exam_access')->where('exam_group_id', $examGroup->id)->where("examinee", $order->user_id)->delete();
+                    }
+                }
+                DB::table('order_list')->where('id', $singleOrder->id)->delete();
+                DB::table('order')->where('id', $singleOrder->order_id)->delete();
+            }
+        }
+
+        $response = [
+            'message' => "Access is done",
         ];
 
         return response($response, 201);

@@ -22,8 +22,11 @@ use Illuminate\Support\Facades\Route;
 //public route
 Route::post("/signup", [authController::class, 'register']);
 Route::post("/signin", [authController::class, 'login']);
+Route::post("/checkToken", [authController::class, 'checkToken']);
 Route::post("/googleSignIn", [authController::class, 'googleSignIn']);
 Route::post("/logout", [authController::class, 'logout']);
+
+Route::post("/checkAccess", [orderController::class, 'checkAccess']);
 
 Route::post("/readBlog", [blogController::class, 'readBlog']);
 Route::post("/readSingleBlog", [blogController::class, 'readSingleBlog']);

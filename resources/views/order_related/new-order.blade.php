@@ -7,9 +7,6 @@
 
     <div class="py-12">
         <div class="ml-4 sm:px-6 lg:px-8">
-            {{-- <div class="my-10 w-full">
-                <a href="{{ route('question.add') }} " class="p-3 bg-gray-300 hover:bg-gray-400 rounded">Add new</a>
-            </div> --}}
             <div class="bg-white dark:text-black overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                     <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">

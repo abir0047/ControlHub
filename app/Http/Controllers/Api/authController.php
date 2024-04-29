@@ -47,7 +47,9 @@ class authController extends Controller
 
 
 		$token = $user->createToken('adminControlToken')->plainTextToken;
-
+		User::where('id', $user->id)->update([
+			'remember_token' => $token,
+		]);
 		$response = [
 			'user' => $user,
 			'token' => $token,
@@ -80,7 +82,9 @@ class authController extends Controller
 		}
 
 		$token = $user->createToken('adminControlToken')->plainTextToken;
-
+		User::where('id', $user->id)->update([
+			'remember_token' => $token,
+		]);
 		$response = [
 			'user' => $user,
 			'token' => $token,
@@ -244,6 +248,7 @@ class authController extends Controller
 
 		$user = User::where('email', $request->email)->first();
 		if (!$user) {
+
 			$user = User::create([
 				'name' => $request->displayName,
 				'email' => $request->email,
@@ -263,7 +268,9 @@ class authController extends Controller
 				'exam_group_id' => 12,
 			]);
 			$token = $user->createToken('adminControlToken')->plainTextToken;
-
+			User::where('id', $user->id)->update([
+				'remember_token' => $token,
+			]);
 			$response = [
 				'user' => $user,
 				'token' => $token,
@@ -277,7 +284,9 @@ class authController extends Controller
 				]);
 			}
 			$token = $user->createToken('adminControlToken')->plainTextToken;
-
+			User::where('id', $user->id)->update([
+				'remember_token' => $token,
+			]);
 			$response = [
 				'user' => $user,
 				'token' => $token,
@@ -306,5 +315,24 @@ class authController extends Controller
 		];
 
 		return response($response, 201);
+	}
+
+	public function checkToken(Request $request)
+	{
+		$token = $request->bearerToken();
+		$data = $request->validate([
+			'email' => 'required',
+		]);
+		$user = User::where('email', $data['email'])->first();
+
+		if ($token == $user->remember_token) {
+			return response([
+				'message' => "match"
+			], 401);
+		} else {
+			return response([
+				'message' => "not match"
+			], 401);
+		}
 	}
 }
