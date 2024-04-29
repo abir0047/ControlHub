@@ -210,7 +210,7 @@ class orderController extends Controller
         }
 
         $response = [
-            'message' => "Access is done",
+            'message' => "Access is checked",
         ];
 
         return response($response, 201);

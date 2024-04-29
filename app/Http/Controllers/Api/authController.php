@@ -319,10 +319,11 @@ class authController extends Controller
 
 	public function checkToken(Request $request)
 	{
-		$token = $request->bearerToken();
+
 		$data = $request->validate([
 			'email' => 'required',
 		]);
+		$token = $request->bearerToken();
 		$user = User::where('email', $data['email'])->first();
 
 		if ($token == $user->remember_token) {
