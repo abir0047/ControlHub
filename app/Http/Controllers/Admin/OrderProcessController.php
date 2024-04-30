@@ -107,9 +107,9 @@ class OrderProcessController extends Controller
             $orderTime = "year";
         }
         if ($orderType == "barCouncil") {
-            $examGroups = DB::table('exam_groups')->where('exam_category_id', 1)->whereNot('name', 'বিগত বছরের প্রশ্নসমূহ')->get();
+            $examGroups = DB::table('exam_groups')->where('exam_category_id', 1)->whereNot('name', 'বিগত বছরের প্রশ্নসমূহ - বার কাউন্সিল')->get();
         } elseif ($orderType == "judiciary") {
-            $examGroups = DB::table('exam_groups')->where('exam_category_id', 2)->whereNot('name', 'বিগত বছরের প্রশ্নসমূহ')->get();
+            $examGroups = DB::table('exam_groups')->where('exam_category_id', 2)->whereNot('name', 'বিগত বছরের প্রশ্নসমূহ - জুডিশিয়ারি')->get();
         }
         foreach ($examGroups as $examGroup) {
             DB::table('exam_access')->where('exam_group_id', $examGroup->id)->where("examinee", $order->user_id)->delete();
