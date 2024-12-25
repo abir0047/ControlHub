@@ -204,6 +204,8 @@ class orderController extends Controller
                         DB::table('exam_access')->where('exam_group_id', $examGroup->id)->where("examinee", $order->user_id)->delete();
                     }
                 }
+                //this line is added
+                DB::table('exam_access')->where('exam_group_id', 9)->where("examinee", $order->user_id)->delete();
                 DB::table('order_list')->where('id', $singleOrder->id)->delete();
                 DB::table('order')->where('id', $singleOrder->order_id)->delete();
             }
@@ -211,6 +213,28 @@ class orderController extends Controller
 
         $response = [
             'message' => "Access is checked",
+        ];
+
+        return response($response, 201);
+    }
+
+    public function adFree(Request $request)
+    {
+        $data = $request->validate([
+            'userEmail' => 'required | string',
+        ]);
+        $user = User::where('email', $data['userEmail'])->first();
+        $info = DB::table('exam_access')->where('exam_group_id', 9)->where("examinee", $user->id)->First();
+
+        if ($info == null) {
+            $adFree = false;
+        } else {
+            $adFree = true;
+        }
+
+        $response = [
+            'message' => "Access is checked",
+            'adFree' => $adFree,
         ];
 
         return response($response, 201);
