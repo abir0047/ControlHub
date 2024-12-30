@@ -32,6 +32,8 @@ Route::post("/readBlog", [blogController::class, 'readBlog']);
 Route::post("/readSingleBlog", [blogController::class, 'readSingleBlog']);
 Route::post("/passwordReset", [authController::class, 'passwordReset']);
 
+Route::post("/reportError", [authController::class, 'reportError']);
+
 //protected route
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post("/showProfile", [authController::class, 'showProfile']);

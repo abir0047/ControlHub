@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Mail\ContactUs;
 use App\Mail\VerifyEmail;
 use App\Mail\PasswordReset;
+use App\Mail\ReportError;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -335,5 +336,12 @@ class authController extends Controller
 				'message' => "not match"
 			], 401);
 		}
+	}
+
+	public function reportError(Request $request)
+	{
+		$error = $request->get('error');
+		$stack = $request->get('stack');
+		Mail::to(config('mail.from.address'))->send(new ReportError($error, $stack));
 	}
 }
