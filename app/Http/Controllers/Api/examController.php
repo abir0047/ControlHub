@@ -102,7 +102,7 @@ class examController extends Controller
         $questionSets = DB::table('question_set')->where('name', 'like', '%' . $data['tagTitle'] . '%')->get();
         if (!$questionSets) {
             return response([
-                'message' => "examGroupId is invalid.",
+                'message' => "tagTitle is invalid.",
             ], 401);
         }
         $questions = collect();
