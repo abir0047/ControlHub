@@ -96,10 +96,10 @@ class examController extends Controller
     {
         $data = $request->validate([
             'subjectName' => 'required | string',
-            'examGroupId' => 'required | integer',
+            'tagTitle' => 'required | string',
         ]);
 
-        $questionSets = DB::table('question_set')->where('exam_group_id', $data['examGroupId'])->get();
+        $questionSets = DB::table('question_set')->where('name', 'like', '%' . $data['tagTitle'] . '%')->get();
         if (!$questionSets) {
             return response([
                 'message' => "examGroupId is invalid.",
