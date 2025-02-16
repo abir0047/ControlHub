@@ -90,7 +90,7 @@ class OrderProcessController extends Controller
             'examinee' => $order->user_id,
             'exam_group_id' => 11,
         ]);
-        if ($order->name == "সম্পূর্ণ প্রিমিয়াম গ্রুপ + বিজ্ঞাপন মুক্ত") {
+        if ($order->name == "সকল প্রিমিয়াম গ্রুপ + বিজ্ঞাপন মুক্ত") {
             DB::table('exam_access')->insert([
                 'examinee' => $order->user_id,
                 'exam_group_id' => 14,
@@ -132,7 +132,7 @@ class OrderProcessController extends Controller
         DB::table('exam_access')->where('exam_group_id', 9)->where("examinee", $order->user_id)->delete();
         DB::table('exam_access')->where('exam_group_id', 10)->where("examinee", $order->user_id)->delete();
         DB::table('exam_access')->where('exam_group_id', 11)->where("examinee", $order->user_id)->delete();
-        if ($order->name == "সম্পূর্ণ প্রিমিয়াম গ্রুপ + বিজ্ঞাপন মুক্ত") {
+        if ($order->name == "সকল প্রিমিয়াম গ্রুপ + বিজ্ঞাপন মুক্ত") {
             DB::table('exam_access')->where('exam_group_id', 14)->where("examinee", $order->user_id)->delete();
         }
         DB::table('order_list')->where('id', $request->id)->delete();
