@@ -175,37 +175,20 @@ class orderController extends Controller
         foreach ($orderList as $singleOrder) {
             if (Carbon::today()->gt(Carbon::parse($singleOrder->deadline))) {
                 $order = DB::table('order')->where('id', $singleOrder->order_id)->first();
-                if ($singleOrder->name = "বার কাউন্সিল - মাসিক") {
-                    $orderType = "barCouncil";
-                    $orderTime = "month";
-                } elseif ($singleOrder->name = "বার কাউন্সিল - বার্ষিক") {
-                    $orderType = "barCouncil";
-                    $orderTime = "year";
-                } elseif ($singleOrder->name = "জুডিশিয়ারি - মাসিক") {
-                    $orderType = "judiciary";
-                    $orderTime = "month";
-                } elseif ($singleOrder->name = "জুডিশিয়ারি - বার্ষিক") {
-                    $orderType = "judiciary";
-                    $orderTime = "year";
-                } else {
-                    $orderType = "other";
-                }
-                if ($orderType == "barCouncil") {
-                    $examGroups = DB::table('exam_groups')->where('exam_category_id', 1)->whereNot('name', 'বিগত বছরের প্রশ্নসমূহ')->get();
-                } elseif ($orderType == "judiciary") {
-                    $examGroups = DB::table('exam_groups')->where('exam_category_id', 2)->whereNot('name', 'বিগত বছরের প্রশ্নসমূহ')->get();
-                }
 
-                if ($orderType == "other") {
-                    $examGroup = DB::table('exam_groups')->where('name', $singleOrder->name)->first();
-                    DB::table('exam_access')->where('exam_group_id', $examGroup->id)->where("examinee", $order->user_id)->delete();
-                } else {
-                    foreach ($examGroups as $examGroup) {
-                        DB::table('exam_access')->where('exam_group_id', $examGroup->id)->where("examinee", $order->user_id)->delete();
-                    }
-                }
-                //this line is added
+                DB::table('exam_access')->where('exam_group_id', 2)->where("examinee", $order->user_id)->delete();
+                DB::table('exam_access')->where('exam_group_id', 3)->where("examinee", $order->user_id)->delete();
+                DB::table('exam_access')->where('exam_group_id', 4)->where("examinee", $order->user_id)->delete();
+                DB::table('exam_access')->where('exam_group_id', 5)->where("examinee", $order->user_id)->delete();
+                DB::table('exam_access')->where('exam_group_id', 6)->where("examinee", $order->user_id)->delete();
+                DB::table('exam_access')->where('exam_group_id', 7)->where("examinee", $order->user_id)->delete();
+                DB::table('exam_access')->where('exam_group_id', 8)->where("examinee", $order->user_id)->delete();
                 DB::table('exam_access')->where('exam_group_id', 9)->where("examinee", $order->user_id)->delete();
+                DB::table('exam_access')->where('exam_group_id', 10)->where("examinee", $order->user_id)->delete();
+                DB::table('exam_access')->where('exam_group_id', 11)->where("examinee", $order->user_id)->delete();
+                if ($order->name == "সম্পূর্ণ প্রিমিয়াম গ্রুপ + বিজ্ঞাপন মুক্ত") {
+                    DB::table('exam_access')->where('exam_group_id', 14)->where("examinee", $order->user_id)->delete();
+                }
                 DB::table('order_list')->where('id', $singleOrder->id)->delete();
                 DB::table('order')->where('id', $singleOrder->order_id)->delete();
             }
@@ -224,7 +207,7 @@ class orderController extends Controller
             'userEmail' => 'required | string',
         ]);
         $user = User::where('email', $data['userEmail'])->first();
-        $info = DB::table('exam_access')->where('exam_group_id', 9)->where("examinee", $user->id)->First();
+        $info = DB::table('exam_access')->where('exam_group_id', 14)->where("examinee", $user->id)->First();
 
         if ($info == null) {
             $adFree = false;
@@ -235,6 +218,28 @@ class orderController extends Controller
         $response = [
             'message' => "Access is checked",
             'adFree' => $adFree,
+        ];
+
+        return response($response, 201);
+    }
+
+    public function barFullAccess(Request $request)
+    {
+        $data = $request->validate([
+            'userEmail' => 'required | string',
+        ]);
+        $user = User::where('email', $data['userEmail'])->first();
+        $info = DB::table('exam_access')->where('exam_group_id', 9)->where("examinee", $user->id)->First();
+
+        if ($info == null) {
+            $barFullAccess = false;
+        } else {
+            $barFullAccess = true;
+        }
+
+        $response = [
+            'message' => "Access is checked",
+            'barFullAccess' => $barFullAccess,
         ];
 
         return response($response, 201);

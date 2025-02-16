@@ -59,4 +59,5 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post("/getMyGroups", [orderController::class, 'getMyGroups']);
     Route::post("/couponPrice", [orderController::class, 'couponPrice']);
     Route::post("/adFree", [orderController::class, 'adFree']);
+    Route::post("/barFullAccess", [orderController::class, 'barFullAccess']);
 });

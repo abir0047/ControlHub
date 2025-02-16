@@ -29,23 +29,10 @@ class OrderProcessController extends Controller
     {
         $order = DB::table('order')->where('id', $request->id)->first();
 
-        // if ($order->name = "বার কাউন্সিল - মাসিক") {
-        //     $orderType = "barCouncil";
-        //     $orderTime = "month";
-        // } elseif ($order->name = "বার কাউন্সিল - বার্ষিক") {
-        //     $orderType = "barCouncil";
-        //     $orderTime = "year";
-        // } elseif ($order->name = "জুডিশিয়ারি - মাসিক") {
-        //     $orderType = "judiciary";
-        //     $orderTime = "month";
-        // } elseif ($order->name = "জুডিশিয়ারি - বার্ষিক") {
-        //     $orderType = "judiciary";
-        //     $orderTime = "year";
-        // }
-
-        if ($order->name = "বিজ্ঞাপন মুক্ত - মাসিক") {
+        //here the 500 is based on an assume amount that will not conflict old and new changes
+        if ($order->amount < 500) {
             $orderTime = "month";
-        } elseif ($order->name = "বিজ্ঞাপন মুক্ত - বার্ষিক") {
+        } else {
             $orderTime = "year";
         }
 
@@ -62,23 +49,53 @@ class OrderProcessController extends Controller
                 'deadline' => Carbon::now()->addMonth(),
             ]);
         }
-        // if ($orderType == "barCouncil") {
-        //     $examGroups = DB::table('exam_groups')->where('exam_category_id', 1)->whereNot('name', 'বিগত বছরের প্রশ্নসমূহ')->get();
-        // } elseif ($orderType == "judiciary") {
-        //     $examGroups = DB::table('exam_groups')->where('exam_category_id', 2)->whereNot('name', 'বিগত বছরের প্রশ্নসমূহ')->get();
-        // }
-        // foreach ($examGroups as $examGroup) {
-        //     DB::table('exam_access')->insert([
-        //         'examinee' => $order->user_id,
-        //         'exam_group_id' => $examGroup->id,
-        //     ]);
-        // }
 
-        // Here 9 is just a picked number
+        DB::table('exam_access')->insert([
+            'examinee' => $order->user_id,
+            'exam_group_id' => 2,
+        ]);
+        DB::table('exam_access')->insert([
+            'examinee' => $order->user_id,
+            'exam_group_id' => 3,
+        ]);
+        DB::table('exam_access')->insert([
+            'examinee' => $order->user_id,
+            'exam_group_id' => 4,
+        ]);
+        DB::table('exam_access')->insert([
+            'examinee' => $order->user_id,
+            'exam_group_id' => 5,
+        ]);
+        DB::table('exam_access')->insert([
+            'examinee' => $order->user_id,
+            'exam_group_id' => 6,
+        ]);
+        DB::table('exam_access')->insert([
+            'examinee' => $order->user_id,
+            'exam_group_id' => 7,
+        ]);
+        DB::table('exam_access')->insert([
+            'examinee' => $order->user_id,
+            'exam_group_id' => 8,
+        ]);
         DB::table('exam_access')->insert([
             'examinee' => $order->user_id,
             'exam_group_id' => 9,
         ]);
+        DB::table('exam_access')->insert([
+            'examinee' => $order->user_id,
+            'exam_group_id' => 10,
+        ]);
+        DB::table('exam_access')->insert([
+            'examinee' => $order->user_id,
+            'exam_group_id' => 11,
+        ]);
+        if ($order->name == "সম্পূর্ণ প্রিমিয়াম গ্রুপ + বিজ্ঞাপন মুক্ত") {
+            DB::table('exam_access')->insert([
+                'examinee' => $order->user_id,
+                'exam_group_id' => 14,
+            ]);
+        }
 
 
         DB::table('order')->where('id', $order->id)->update([
@@ -105,28 +122,19 @@ class OrderProcessController extends Controller
     {
         $orderList = DB::table('order_list')->where('id', $request->id)->first();
         $order = DB::table('order')->where('id', $orderList->order_id)->first();
-        // if ($orderList->name = "বার কাউন্সিল - মাসিক") {
-        //     $orderType = "barCouncil";
-        //     $orderTime = "month";
-        // } elseif ($orderList->name = "বার কাউন্সিল - বার্ষিক") {
-        //     $orderType = "barCouncil";
-        //     $orderTime = "year";
-        // } elseif ($orderList->name = "জুডিশিয়ারি - মাসিক") {
-        //     $orderType = "judiciary";
-        //     $orderTime = "month";
-        // } elseif ($orderList->name = "জুডিশিয়ারি - বার্ষিক") {
-        //     $orderType = "judiciary";
-        //     $orderTime = "year";
-        // }
-        // if ($orderType == "barCouncil") {
-        //     $examGroups = DB::table('exam_groups')->where('exam_category_id', 1)->whereNot('name', 'বিগত বছরের প্রশ্নসমূহ - বার কাউন্সিল')->get();
-        // } elseif ($orderType == "judiciary") {
-        //     $examGroups = DB::table('exam_groups')->where('exam_category_id', 2)->whereNot('name', 'বিগত বছরের প্রশ্নসমূহ - জুডিশিয়ারি')->get();
-        // }
-        // foreach ($examGroups as $examGroup) {
-        //     DB::table('exam_access')->where('exam_group_id', $examGroup->id)->where("examinee", $order->user_id)->delete();
-        // }
+        DB::table('exam_access')->where('exam_group_id', 2)->where("examinee", $order->user_id)->delete();
+        DB::table('exam_access')->where('exam_group_id', 3)->where("examinee", $order->user_id)->delete();
+        DB::table('exam_access')->where('exam_group_id', 4)->where("examinee", $order->user_id)->delete();
+        DB::table('exam_access')->where('exam_group_id', 5)->where("examinee", $order->user_id)->delete();
+        DB::table('exam_access')->where('exam_group_id', 6)->where("examinee", $order->user_id)->delete();
+        DB::table('exam_access')->where('exam_group_id', 7)->where("examinee", $order->user_id)->delete();
+        DB::table('exam_access')->where('exam_group_id', 8)->where("examinee", $order->user_id)->delete();
         DB::table('exam_access')->where('exam_group_id', 9)->where("examinee", $order->user_id)->delete();
+        DB::table('exam_access')->where('exam_group_id', 10)->where("examinee", $order->user_id)->delete();
+        DB::table('exam_access')->where('exam_group_id', 11)->where("examinee", $order->user_id)->delete();
+        if ($order->name == "সম্পূর্ণ প্রিমিয়াম গ্রুপ + বিজ্ঞাপন মুক্ত") {
+            DB::table('exam_access')->where('exam_group_id', 14)->where("examinee", $order->user_id)->delete();
+        }
         DB::table('order_list')->where('id', $request->id)->delete();
         DB::table('order')->where('id', $orderList->order_id)->delete();
         return redirect()->route('order.orderList');
