@@ -114,7 +114,12 @@ class OrderProcessController extends Controller
 
     public function orderList()
     {
-        $orderList = DB::table('order_list')->paginate(10);
+        $orderList = DB::table('order_list')
+            ->join('order', 'order_list.order_id', '=', 'order.id')
+            ->join('users', 'order.user_id', '=', 'users.id')
+            ->select('order_list.*', 'users.name as user_name', 'users.email as user_email')
+            ->paginate(10);
+
         return view('order_related.all-order', ['orderList' => $orderList]);
     }
 

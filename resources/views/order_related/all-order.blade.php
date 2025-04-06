@@ -17,6 +17,12 @@
                                         <tr>
                                             <th scope="col"
                                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-200 uppercase tracking-wider">
+                                                User Name</th>
+                                            <th scope="col"
+                                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-200 uppercase tracking-wider">
+                                                User Email</th>
+                                            <th scope="col"
+                                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-200 uppercase tracking-wider">
                                                 Order Name</th>
                                             <th scope="col"
                                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-200 uppercase tracking-wider">
@@ -30,6 +36,11 @@
                                         <tr></tr>
                                         @foreach ($orderList as $singleOrder)
                                             <tr>
+                                                <td class="px-6 py-4 whitespace-nowrap">{{ $singleOrder->user_name }}
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap">{{ $singleOrder->user_email }}
+                                                </td>
+
                                                 <td class="px-6 py-4 whitespace-nowrap">{{ $singleOrder->name }}</td>
 
                                                 <td class="px-6 py-4 whitespace-nowrap">{{ $singleOrder->deadline }}
