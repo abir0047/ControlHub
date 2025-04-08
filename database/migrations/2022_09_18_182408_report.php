@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('report', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->references('id')->on('users')->constrained()->onDelete('cascade');
-            $table->foreignId('question_set_id')->references('id')->on('question_set')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('question_set_id')->constrained('question_set')->onDelete('cascade');
             $table->integer('total_questions');
             $table->integer('attempted');
             $table->integer('correct');

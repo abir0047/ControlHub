@@ -21,7 +21,7 @@ return new class extends Migration
             $table->integer('correct');
             $table->integer('wrong');
             $table->decimal('total_marks', 5, 2);
-            $table->foreignId('report_id')->references('id')->on('report')->constrained()->onDelete('cascade');
+            $table->foreignId('report_id')->constrained('report')->onDelete('cascade');
             $table->timestamps();
         });
     }
