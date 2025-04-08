@@ -47,7 +47,7 @@ class reportController extends Controller
             'correct' => 'required|integer|min:0',
             'wrong' => 'required|integer|min:0',
             'total_marks' => 'required|numeric',
-            'time_taken' => 'required|integer|min:1', // in seconds
+            'time_taken' => 'required|integer|min:1',
             'sections' => 'required|array|min:1'
         ]);
 
@@ -122,56 +122,113 @@ class reportController extends Controller
     public function getReport(Request $request)
     {
         $data = $request->validate([
-            'userEmail' => 'required | string',
+            'userEmail' => 'required|email|exists:users,email',
         ]);
+
         $user = User::where('email', $data['userEmail'])->first();
 
-        $report = DB::table('question_set')
-            ->where('examinee', $user->id)
-            ->join('report', 'question_set.id', '=', 'report.question_set_id')
-            ->where('question_set.exam_group_id', '!=', 1)
-            ->join(DB::raw('(SELECT question_set_id, AVG(total_marks) AS average_total_marks FROM report GROUP BY question_set_id) AS report2'), 'question_set.id', '=', 'report2.question_set_id')
-            ->select('report.*', 'question_set.*', 'report2.average_total_marks')
+        // Get all reports with section analysis and question set details
+        $reports = DB::table('report')
+            ->where('user_id', $user->id)
+            ->join('question_set', 'report.question_set_id', '=', 'question_set.id')
+            ->leftJoin('section_based_analysis', 'report.id', '=', 'section_based_analysis.report_id')
+            ->select(
+                'report.*',
+                'question_set.name as question_set_name',
+                'section_based_analysis.section_name',
+                'section_based_analysis.total_questions as section_total',
+                'section_based_analysis.attempted as section_attempted',
+                'section_based_analysis.correct as section_correct',
+                'section_based_analysis.wrong as section_wrong',
+                'section_based_analysis.total_marks as section_marks'
+            )
+            ->orderBy('report.created_at', 'desc')
             ->get();
 
-        $grouped_report = [];
+        // Group reports and their sections
+        $groupedReports = $reports->groupBy('id')->map(function ($reportGroup) {
+            $mainReport = $reportGroup->first();
+            return [
+                'id' => $mainReport->id,
+                'question_set' => $mainReport->question_set_name,
+                'date' => $mainReport->created_at,
+                'total_questions' => $mainReport->total_questions,
+                'attempted' => $mainReport->attempted,
+                'correct' => $mainReport->correct,
+                'wrong' => $mainReport->wrong,
+                'total_marks' => $mainReport->total_marks,
+                'time_taken' => $mainReport->time_taken,
+                'sections' => $reportGroup->map(function ($section) {
+                    return [
+                        'name' => $section->section_name,
+                        'total' => $section->section_total,
+                        'attempted' => $section->section_attempted,
+                        'correct' => $section->section_correct,
+                        'wrong' => $section->section_wrong,
+                        'marks' => $section->section_marks
+                    ];
+                })->filter()->values()
+            ];
+        })->values();
 
-        $set = 1;
-        for ($group = 1; $group <= 10; $group++) {
-            for ($i = 1; $i <= 10; $i++) {
-                $grouped_report[] = [
-                    'group_id' => $group + 1,
-                    'group_name' => 'গ্রুপ ' . $this->getBanglaNumber(strval($group)),
-                    'set_id' => $set + 5,
-                    'set_name' => 'সেট ' . $this->getBanglaNumber(strval($i)),
-                    'participate' => false,
-                    'average_total_marks' => '',
-                    'last_total_marks' => '',
-                    'taken_time' => '',
+        // Calculate summary statistics
+        $totalExams = $groupedReports->count();
+        $averageScore = $groupedReports->avg('total_marks');
+        $totalTime = $groupedReports->sum('time_taken');
+
+        // Prepare performance timeline data
+        $timelineData = $groupedReports->map(function ($report, $index) {
+            return [
+                'x' => $index + 1,
+                'y' => $report['total_marks'],
+                'date' => date('d M Y', strtotime($report['date']))
+            ];
+        });
+
+        // Prepare subject performance data
+        $subjectPerformance = $groupedReports->flatMap(function ($report) {
+            return collect($report['sections'])->map(function ($section) use ($report) {
+                return [
+                    'subject' => $section['name'],
+                    'score' => $section['marks'],
+                    'date' => $report['date']
                 ];
-                $set++;
-            }
-        }
+            });
+        })->groupBy('subject')->map(function ($sections, $subject) {
+            return [
+                'subject' => $subject,
+                'average_score' => $sections->avg('score'),
+                'total_attempts' => $sections->count()
+            ];
+        })->values();
 
-        foreach ($report as $row) {
-            foreach ($grouped_report as &$group) {
-                if ($row->question_set_id == $group['set_id']) {
-                    $group['participate'] = true;
-                    $group['last_total_marks'] = $row->total_marks;
-                    $group['average_total_marks'] = $row->average_total_marks;
-                    $group['taken_time'] = $row->taken_time;
-                }
-            }
-        }
-        $report = $grouped_report;
+        // Prepare weakness analysis
+        $weaknessAnalysis = $subjectPerformance->sortBy('average_score')
+            ->take(3)
+            ->map(function ($subject) {
+                return [
+                    'subject' => $subject['subject'],
+                    'score' => round($subject['average_score'], 2)
+                ];
+            });
 
-        $token = $request->bearerToken();
-
+        // Format final response
         $response = [
-            'report' => $report,
-            'token' => $token,
+            'headerSummary' => [
+                'totalExams' => $this->getBanglaNumber((string)$totalExams),
+                'averageScore' => $this->getBanglaNumber(number_format($averageScore, 2)),
+                'totalTime' => $this->getBanglaNumber(gmdate('H:i', $totalTime))
+            ],
+            'performanceTimeline' => $timelineData,
+            'subjectPerformance' => $subjectPerformance,
+            'weaknessAnalysis' => $weaknessAnalysis,
+            'detailedReports' => $groupedReports
         ];
 
-        return response($response, 201);
+        return response()->json([
+            'success' => true,
+            'data' => $response,
+            'token' => $request->bearerToken()
+        ]);
     }
 }
