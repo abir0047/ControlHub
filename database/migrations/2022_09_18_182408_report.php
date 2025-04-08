@@ -15,14 +15,15 @@ return new class extends Migration
     {
         Schema::create('report', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('examinee')->references('id')->on('users')->constrained()->onDelete('cascade');
-            $table->foreignId('question_set_id')->references('id')->on('question_set')->constrained()->onDelete('cascade');
-            $table->string('attempted');
-            $table->string('right');
-            $table->string('wrong');
-            $table->string('total_marks');
-            $table->string('taken_time');
-            $table->string('exam_date');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('question_set_id')->constrained()->onDelete('cascade');
+            $table->integer('total_questions');
+            $table->integer('attempted');
+            $table->integer('correct');
+            $table->integer('wrong');
+            $table->decimal('total_marks', 5, 2);
+            $table->integer('time_taken');
+            $table->timestamps();
         });
     }
 
