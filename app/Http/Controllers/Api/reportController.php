@@ -245,7 +245,7 @@ class reportController extends Controller
             'others_text' => 'nullable|string|max:255'
         ]);
 
-        $report = DB::table('question_reports')->create([
+        $report = DB::table('question_reports')->insert([
             'user_email' => $validated['userEmail'],
             'question_id' => $validated['questionId'],
             'question_wrong' => $validated['reasons']['question_wrong'] ?? false,
