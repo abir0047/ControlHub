@@ -24,4 +24,18 @@ class QuestionModificationController extends Controller
 
         return view('report_related.question-report-list', compact('questionReports'));
     }
+
+    public function questionNoExplanation()
+    {
+        $questions = DB::table('questions')
+            ->where(function ($query) {
+                $query->where('explanation', '')
+                    ->orWhere('explanation', 'N/A');
+            })
+            ->join('question_set', 'questions.exam_set_id', '=', 'question_set.id')
+            ->select('questions.*', 'question_set.name as set_name')
+            ->paginate(10);
+
+        return view('questions-no-explanation', compact('questions'));
+    }
 }

@@ -117,6 +117,7 @@ class QuestionController extends Controller
             'question_reports' => $reports
         ]);
     }
+
     public function update(Request $request)
     {
         $this->validate($request, [
@@ -131,10 +132,16 @@ class QuestionController extends Controller
             'explanation' => 'required',
             'section' => 'required',
         ]);
-        if ($request->correct_answer == 'option1') $correct = $request->option1;
-        else if ($request->correct_answer == 'option2') $correct = $request->option2;
-        else if ($request->correct_answer == 'option3') $correct = $request->option3;
-        else  $correct = $request->option4;
+
+        // Handle correct answer
+        $correct = match ($request->correct_answer) {
+            'option1' => $request->option1,
+            'option2' => $request->option2,
+            'option3' => $request->option3,
+            default => $request->option4,
+        };
+
+        // Update question
         $data = DB::table('question_set')->where('name', $request->question_set)->first();
         DB::table('questions')->where('id', $request->id)->update([
             'question' => $request->question,
@@ -147,6 +154,15 @@ class QuestionController extends Controller
             'explanation' => $request->explanation,
             'section' => $request->section,
         ]);
+
+        // Handle report resolution
+        if ($request->has('resolved_reports')) {
+            DB::table('question_reports')
+                ->whereIn('id', $request->resolved_reports)
+                ->delete();
+            return redirect()->route('question-report.index');
+        }
+
         return redirect()->route('question.index');
     }
 }

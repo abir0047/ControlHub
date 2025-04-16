@@ -132,6 +132,56 @@
                                     @endforeach
                                 </select>
                             </div>
+                            @if ($question_reports->isNotEmpty())
+                                <div class="w-full mt-8 p-4 border rounded-lg">
+                                    <h3 class="text-lg font-semibold mb-4">Question Reports</h3>
+
+                                    @foreach ($question_reports as $report)
+                                        <div class="report-item mb-4 p-3 border-b">
+                                            <div class="flex justify-between items-center">
+                                                <div>
+                                                    <p class="text-sm text-gray-600">
+                                                        রিপোর্টকারী: {{ $report->user_email }}<br>
+                                                        @if (
+                                                            $report->question_wrong ||
+                                                                $report->answer_wrong ||
+                                                                $report->explanation_wrong ||
+                                                                $report->typo_mistake ||
+                                                                $report->others)
+                                                            <span class="font-medium">ত্রুটির ধরন:</span>
+                                                            @if ($report->question_wrong)
+                                                                <span class="badge">প্রশ্ন ভুল</span>
+                                                            @endif
+                                                            @if ($report->answer_wrong)
+                                                                <span class="badge">উত্তর ভুল</span>
+                                                            @endif
+                                                            @if ($report->explanation_wrong)
+                                                                <span class="badge">ব্যাখ্যা ভুল</span>
+                                                            @endif
+                                                            @if ($report->typo_mistake)
+                                                                <span class="badge">টাইপো ত্রুটি</span>
+                                                            @endif
+                                                            @if ($report->others && $report->others_text)
+                                                                <span class="badge">অন্যান্য:
+                                                                    {{ $report->others_text }}</span>
+                                                            @endif
+                                                        @endif
+                                                    </p>
+                                                    <span class="text-xs text-gray-500">
+                                                        {{ \Carbon\Carbon::parse($report->created_at)->diffForHumans() }}</span>
+                                                </div>
+
+                                                <label class="flex items-center space-x-4">
+                                                    <input type="checkbox" name="resolved_reports[]"
+                                                        value="{{ $report->id }}"
+                                                        class="form-checkbox h-4 w-4 text-blue-600">
+                                                    <span class="text-sm ml-2">ত্রুটি সমাধান করা হয়েছে</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @endif
                             <div class="flex justify-center">
                                 <button class="m-2 p-2 bg-gray-200 hover:bg-gray-300 rounded mt-5">Submit</button>
                             </div>

@@ -84,4 +84,6 @@ Route::post('/remove-access', [OrderProcessController::class, 'removeAccess'])->
 
 // QuestionModificationController
 Route::get('/question-report', [QuestionModificationController::class, 'index'])->name('question-report.index');
+Route::get('/question-no-explanation', [QuestionModificationController::class, 'questionNoExplanation'])->name('questions.no-explanation');
+
 require __DIR__ . '/auth.php';
