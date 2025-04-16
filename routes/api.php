@@ -49,6 +49,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     Route::post("/inputReport", [reportController::class, 'inputReport']);
     Route::post("/getReport", [reportController::class, 'getReport']);
+    Route::post("/submitQuestionReport", [reportController::class, 'submitQuestionReport']);
 
     Route::post("/postBlog", [blogController::class, 'postBlog']);
     Route::post("/updateBlog", [blogController::class, 'updateBlog']);

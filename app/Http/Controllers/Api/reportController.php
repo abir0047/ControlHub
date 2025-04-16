@@ -231,4 +231,35 @@ class reportController extends Controller
             'token' => $request->bearerToken()
         ]);
     }
+
+    public function submitQuestionReport(Request $request)
+    {
+        $validated = $request->validate([
+            'userEmail' => 'required|email|exists:users,email',
+            'questionId' => 'required|exists:questions,id',
+            'reasons.question_wrong' => 'boolean',
+            'reasons.answer_wrong' => 'boolean',
+            'reasons.explanation_wrong' => 'boolean',
+            'reasons.typo_mistake' => 'boolean',
+            'reasons.others' => 'boolean',
+            'others_text' => 'nullable|string|max:255'
+        ]);
+
+        $report = DB::table('question_reports')->create([
+            'user_email' => $validated['userEmail'],
+            'question_id' => $validated['questionId'],
+            'question_wrong' => $validated['reasons']['question_wrong'] ?? false,
+            'answer_wrong' => $validated['reasons']['answer_wrong'] ?? false,
+            'explanation_wrong' => $validated['reasons']['explanation_wrong'] ?? false,
+            'typo_mistake' => $validated['reasons']['typo_mistake'] ?? false,
+            'others' => $validated['reasons']['others'] ?? false,
+            'others_text' => $validated['others_text'] ?? null
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Report submitted successfully',
+            'data' => $report
+        ], 201);
+    }
 }
