@@ -245,16 +245,46 @@ class reportController extends Controller
             'others_text' => 'nullable|string|max:255'
         ]);
 
-        $report = DB::table('question_reports')->insert([
-            'user_email' => $validated['userEmail'],
-            'question_id' => $validated['questionId'],
-            'question_wrong' => $validated['reasons']['question_wrong'] ?? false,
-            'answer_wrong' => $validated['reasons']['answer_wrong'] ?? false,
-            'explanation_wrong' => $validated['reasons']['explanation_wrong'] ?? false,
-            'typo_mistake' => $validated['reasons']['typo_mistake'] ?? false,
-            'others' => $validated['reasons']['others'] ?? false,
-            'others_text' => $validated['others_text'] ?? null
-        ]);
+        $userEmail = $validated['userEmail'];
+        $questionId = $validated['questionId'];
+        $reasons = $validated['reasons'];
+
+        $data = [
+            'question_wrong' => $reasons['question_wrong'] ?? false,
+            'answer_wrong' => $reasons['answer_wrong'] ?? false,
+            'explanation_wrong' => $reasons['explanation_wrong'] ?? false,
+            'typo_mistake' => $reasons['typo_mistake'] ?? false,
+            'others' => $reasons['others'] ?? false,
+            'others_text' => $validated['others_text'] ?? null,
+        ];
+
+        // Check if a report already exists
+        $existingReport = DB::table('question_reports')
+            ->where('user_email', $userEmail)
+            ->where('question_id', $questionId)
+            ->exists();
+
+        if ($existingReport) {
+            // Update existing report and set updated_at
+            $data['updated_at'] = now();
+            DB::table('question_reports')
+                ->where('user_email', $userEmail)
+                ->where('question_id', $questionId)
+                ->update($data);
+        } else {
+            // Insert new report with timestamps
+            $data['user_email'] = $userEmail;
+            $data['question_id'] = $questionId;
+            $data['created_at'] = now();
+            $data['updated_at'] = now();
+            DB::table('question_reports')->insert($data);
+        }
+
+        // Fetch the latest report data
+        $report = DB::table('question_reports')
+            ->where('user_email', $userEmail)
+            ->where('question_id', $questionId)
+            ->first();
 
         return response()->json([
             'success' => true,

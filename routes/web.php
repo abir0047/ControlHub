@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\OrderProcessController;
+use App\Http\Controllers\Admin\QuestionModificationController;
 use App\Http\Controllers\Admin\QuestionRelated\ExamCategoriesController;
 use App\Http\Controllers\Admin\QuestionRelated\ExamGroupController;
 use App\Http\Controllers\Admin\QuestionRelated\QuestionController;
@@ -81,4 +82,6 @@ Route::post('/remove-order', [OrderProcessController::class, 'removeOrder'])->na
 Route::get('/order-list', [OrderProcessController::class, 'orderList'])->name('order.orderList');
 Route::post('/remove-access', [OrderProcessController::class, 'removeAccess'])->name('order.removeAccess');
 
+// QuestionModificationController
+Route::get('/question-report', [QuestionModificationController::class, 'index'])->name('question-report.index');
 require __DIR__ . '/auth.php';

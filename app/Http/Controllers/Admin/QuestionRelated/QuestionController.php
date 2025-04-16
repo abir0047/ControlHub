@@ -101,6 +101,10 @@ class QuestionController extends Controller
         $groups = DB::table('exam_groups')->where('exam_category_id', $exam_category->id)->get();
         $examSets = DB::table('question_set')->where('exam_group_id', $exam_group->id)->get();
         $sections = DB::table('section')->get();
+        $reports = DB::table('question_reports')
+            ->where('question_id', $question->id)
+            ->orderBy('created_at', 'desc')
+            ->get();
         return view('question_related.question-update', [
             'question' => $question,
             'question_set' => $question_set,
@@ -110,6 +114,7 @@ class QuestionController extends Controller
             'groups' => $groups,
             'examSets' => $examSets,
             'sections' => $sections,
+            'question_reports' => $reports
         ]);
     }
     public function update(Request $request)
